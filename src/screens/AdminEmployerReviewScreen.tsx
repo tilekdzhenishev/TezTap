@@ -13,7 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useStore } from '../store/appStore';
 import { theme } from '../utils/theme';
 import { Employer } from '../types';
-import { ArrowLeft, Check, RefreshCw, X } from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 export const AdminEmployerReviewScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -76,7 +76,7 @@ export const AdminEmployerReviewScreen: React.FC = () => {
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-            <ArrowLeft size={18} color={theme.colors.textSecondary} />
+            <Ionicons name="arrow-back" size={18} color={theme.colors.textSecondary} />
             <Text style={styles.backBtnText}>Назад</Text>
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Работодатели</Text>
@@ -86,7 +86,7 @@ export const AdminEmployerReviewScreen: React.FC = () => {
           <Text style={styles.emptyTitle}>Нет заявок</Text>
           <Text style={styles.emptyText}>Все заявки обработаны</Text>
           <TouchableOpacity style={styles.refreshButton} onPress={loadPendingEmployers}>
-            <RefreshCw size={16} color="#000000" />
+            <Ionicons name="refresh" size={16} color="#000000" />
             <Text style={styles.refreshButtonText}>Обновить</Text>
           </TouchableOpacity>
         </View>
@@ -100,7 +100,7 @@ export const AdminEmployerReviewScreen: React.FC = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-          <ArrowLeft size={18} color={theme.colors.textSecondary} />
+          <Ionicons name="arrow-back" size={18} color={theme.colors.textSecondary} />
           <Text style={styles.backBtnText}>Назад</Text>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Работодатели</Text>
@@ -167,11 +167,11 @@ export const AdminEmployerReviewScreen: React.FC = () => {
 
         <View style={styles.actions}>
           <TouchableOpacity style={styles.approveButton} onPress={handleApprove}>
-            <Check size={17} color="#000000" />
+            <Ionicons name="checkmark" size={17} color="#000000" />
             <Text style={styles.approveButtonText}>Одобрить</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.rejectButton} onPress={handleReject}>
-            <X size={17} color={theme.colors.danger} />
+            <Ionicons name="close" size={17} color={theme.colors.danger} />
             <Text style={styles.rejectButtonText}>
               {showRejectInput ? 'Подтвердить отказ' : 'Отклонить'}
             </Text>

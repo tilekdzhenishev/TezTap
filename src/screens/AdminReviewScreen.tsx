@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
-import { BriefcaseBusiness, Check, HardHat, LockKeyhole, RefreshCw, X } from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AdminJobCard } from '../components/AdminJobCard';
@@ -67,7 +67,12 @@ export const AdminReviewScreen: React.FC = () => {
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <View style={styles.headerTitleRow}>
-            <LockKeyhole size={19} color={theme.colors.admin} style={styles.headerIcon} />
+            <Ionicons
+              name="lock-closed"
+              size={19}
+              color={theme.colors.admin}
+              style={styles.headerIcon}
+            />
             <Text style={styles.headerTitle}>Вакансии</Text>
           </View>
           <Text style={styles.headerCounter}>0 ожидает</Text>
@@ -75,14 +80,24 @@ export const AdminReviewScreen: React.FC = () => {
             style={styles.employersButton}
             onPress={() => navigation.navigate('AdminEmployerReview')}
           >
-            <BriefcaseBusiness size={15} color={theme.colors.admin} style={styles.buttonIcon} />
+            <Ionicons
+              name="briefcase"
+              size={15}
+              color={theme.colors.admin}
+              style={styles.buttonIcon}
+            />
             <Text style={styles.employersButtonText}>Работодатели</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.employersButton}
             onPress={() => navigation.navigate('AdminWorkerVerification')}
           >
-            <HardHat size={15} color={theme.colors.admin} style={styles.buttonIcon} />
+            <Ionicons
+              name="construct"
+              size={15}
+              color={theme.colors.admin}
+              style={styles.buttonIcon}
+            />
             <Text style={styles.employersButtonText}>Работники</Text>
           </TouchableOpacity>
         </View>
@@ -90,7 +105,7 @@ export const AdminReviewScreen: React.FC = () => {
           <Text style={styles.emptyTitle}>Нет подработок для проверки</Text>
           <Text style={styles.emptyText}>Все подработки обработаны</Text>
           <TouchableOpacity style={styles.refreshButton} onPress={loadPendingJobs}>
-            <RefreshCw size={17} color="#000000" style={styles.buttonIcon} />
+            <Ionicons name="refresh" size={17} color="#000000" style={styles.buttonIcon} />
             <Text style={styles.refreshButtonText}>Обновить</Text>
           </TouchableOpacity>
         </View>
@@ -104,7 +119,12 @@ export const AdminReviewScreen: React.FC = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerTitleRow}>
-          <LockKeyhole size={19} color={theme.colors.admin} style={styles.headerIcon} />
+          <Ionicons
+            name="lock-closed"
+            size={19}
+            color={theme.colors.admin}
+            style={styles.headerIcon}
+          />
           <Text style={styles.headerTitle}>Вакансии</Text>
         </View>
         <Text style={styles.headerCounter}>{pendingJobs.length - currentIndex} ожидает</Text>
@@ -112,14 +132,24 @@ export const AdminReviewScreen: React.FC = () => {
           style={styles.employersButton}
           onPress={() => navigation.navigate('AdminEmployerReview')}
         >
-          <BriefcaseBusiness size={15} color={theme.colors.admin} style={styles.buttonIcon} />
+          <Ionicons
+            name="briefcase"
+            size={15}
+            color={theme.colors.admin}
+            style={styles.buttonIcon}
+          />
           <Text style={styles.employersButtonText}>Работодатели</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.employersButton}
           onPress={() => navigation.navigate('AdminWorkerVerification')}
         >
-          <HardHat size={15} color={theme.colors.admin} style={styles.buttonIcon} />
+          <Ionicons
+            name="construct"
+            size={15}
+            color={theme.colors.admin}
+            style={styles.buttonIcon}
+          />
           <Text style={styles.employersButtonText}>Работники</Text>
         </TouchableOpacity>
       </View>
@@ -127,9 +157,19 @@ export const AdminReviewScreen: React.FC = () => {
       {actionFeedback && (
         <View style={styles.feedbackOverlay}>
           {actionFeedback === 'Опубликовано' ? (
-            <Check size={34} color={theme.colors.success} style={styles.feedbackIcon} />
+            <Ionicons
+              name="checkmark"
+              size={34}
+              color={theme.colors.success}
+              style={styles.feedbackIcon}
+            />
           ) : (
-            <X size={34} color={theme.colors.danger} style={styles.feedbackIcon} />
+            <Ionicons
+              name="close"
+              size={34}
+              color={theme.colors.danger}
+              style={styles.feedbackIcon}
+            />
           )}
           <Text style={styles.feedbackText}>{actionFeedback}</Text>
         </View>

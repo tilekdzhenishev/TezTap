@@ -8,12 +8,14 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../types/navigation';
 import { useAuth } from '../../auth/AuthContext';
 import { fetchMyApplications } from '../../supabase/client';
 import { JobApplication } from '../../types';
 import { theme } from '../../utils/theme';
-import { Ban, Check, ClipboardList, CirclePause, Star, X } from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 const STATUS_LABELS: Record<string, string> = {
   applied: 'Ожидает',
@@ -34,7 +36,8 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 export const WorkerProfileScreen: React.FC = () => {
-  const { user, workerProfile, profile, signOut, refreshWorkerProfile } = useAuth();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const { user, workerProfile, profile, loading, signOut, refreshWorkerProfile } = useAuth();
   const [applications, setApplications] = useState<JobApplication[]>([]);
   const [loadingApps, setLoadingApps] = useState(false);
 
@@ -79,11 +82,38 @@ export const WorkerProfileScreen: React.FC = () => {
     ? new Date(workerProfile!.suspended_until!).toLocaleDateString('ru-RU')
     : null;
 
-  if (!workerProfile) {
+  if (loading) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.center}>
           <ActivityIndicator size="large" color={theme.colors.primary} />
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  if (!workerProfile) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.center}>
+          <Ionicons name="person-circle-outline" size={72} color={theme.colors.textMuted} />
+          <Text style={styles.noProfileTitle}>Создайте профиль</Text>
+          <Text style={styles.noProfileText}>
+            Пройдите верификацию, чтобы откликаться на вакансии
+          </Text>
+          <TouchableOpacity
+            style={styles.startBtn}
+            onPress={() =>
+              navigation
+                .getParent<NativeStackNavigationProp<RootStackParamList>>()
+                ?.navigate('WorkerOnboarding')
+            }
+          >
+            <Text style={styles.startBtnText}>Начать верификацию</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.signOutBtn} onPress={signOut}>
+            <Text style={styles.signOutText}>Выйти</Text>
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
     );
@@ -111,11 +141,11 @@ export const WorkerProfileScreen: React.FC = () => {
             ]}
           >
             {workerProfile.verification_status === 'verified' ? (
-              <Check size={13} color={verificationColor()} />
+              <Ionicons name="checkmark" size={13} color={verificationColor()} />
             ) : workerProfile.verification_status === 'rejected' ? (
-              <X size={13} color={verificationColor()} />
+              <Ionicons name="close" size={13} color={verificationColor()} />
             ) : (
-              <CirclePause size={13} color={verificationColor()} />
+              <Ionicons name="pause-circle" size={13} color={verificationColor()} />
             )}
             <Text style={[styles.verBadgeText, { color: verificationColor() }]}>
               {verificationLabel()}
@@ -127,7 +157,7 @@ export const WorkerProfileScreen: React.FC = () => {
         {workerProfile.is_banned && (
           <View style={[styles.alertBox, { borderLeftColor: theme.colors.danger }]}>
             <View style={styles.alertTitleRow}>
-              <Ban size={16} color={theme.colors.danger} />
+              <Ionicons name="ban" size={16} color={theme.colors.danger} />
               <Text style={styles.alertTitle}>Аккаунт заблокирован</Text>
             </View>
             <Text style={styles.alertText}>Свяжитесь с поддержкой для разблокировки.</Text>
@@ -136,7 +166,7 @@ export const WorkerProfileScreen: React.FC = () => {
         {!workerProfile.is_banned && isSuspended && (
           <View style={[styles.alertBox, { borderLeftColor: '#FF8C00' }]}>
             <View style={styles.alertTitleRow}>
-              <CirclePause size={16} color="#FF8C00" />
+              <Ionicons name="pause-circle" size={16} color="#FF8C00" />
               <Text style={styles.alertTitle}>Временная приостановка</Text>
             </View>
             <Text style={styles.alertText}>Доступ восстановится {suspendedUntil}.</Text>
@@ -178,7 +208,7 @@ export const WorkerProfileScreen: React.FC = () => {
           <ActivityIndicator color={theme.colors.primary} style={{ marginTop: 20 }} />
         ) : applications.length === 0 ? (
           <View style={styles.emptyApps}>
-            <ClipboardList size={36} color={theme.colors.textMuted} />
+            <Ionicons name="list" size={36} color={theme.colors.textMuted} />
             <Text style={styles.emptyText}>Ещё нет заявок</Text>
             <Text style={styles.emptySubtext}>Откликнитесь на вакансии на главном экране</Text>
           </View>
@@ -202,7 +232,7 @@ export const WorkerProfileScreen: React.FC = () => {
               </View>
               {app.rating && (
                 <View style={styles.appRatingRow}>
-                  <Star size={14} color={theme.colors.primary} fill={theme.colors.primary} />
+                  <Ionicons name="star" size={14} color={theme.colors.primary} />
                   <Text style={styles.appRating}>Оценка работодателя: {app.rating}/5</Text>
                 </View>
               )}
@@ -308,6 +338,28 @@ const styles = StyleSheet.create({
   appRatingRow: { flexDirection: 'row', alignItems: 'center', gap: 5 },
   appRating: { fontSize: 13, color: theme.colors.textSecondary },
   appDate: { fontSize: 12, color: theme.colors.textMuted },
+  noProfileTitle: {
+    fontSize: 22,
+    fontWeight: '800',
+    color: theme.colors.text,
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  noProfileText: {
+    fontSize: 14,
+    color: theme.colors.textSecondary,
+    textAlign: 'center',
+    lineHeight: 20,
+    marginBottom: 24,
+  },
+  startBtn: {
+    backgroundColor: theme.colors.primary,
+    paddingHorizontal: 32,
+    paddingVertical: 14,
+    borderRadius: 12,
+    marginBottom: 12,
+  },
+  startBtnText: { fontSize: 15, fontWeight: '800', color: '#000' },
   signOutBtn: { paddingVertical: 16, alignItems: 'center', marginTop: theme.spacing.lg },
   signOutText: { fontSize: 14, color: theme.colors.textMuted, fontWeight: '600' },
 });

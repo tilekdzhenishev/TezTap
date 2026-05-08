@@ -9,7 +9,7 @@ import {
   Alert,
   Linking,
 } from 'react-native';
-import { LockKeyhole, RefreshCw } from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { JobCard } from '../components/JobCard';
@@ -135,14 +135,14 @@ export const JobFeedScreen: React.FC = () => {
             }
             style={styles.adminButton}
           >
-            <LockKeyhole size={18} color={theme.colors.textMuted} />
+            <Ionicons name="lock-closed" size={18} color={theme.colors.textMuted} />
           </TouchableOpacity>
         </View>
         <View style={styles.center}>
           <Text style={styles.emptyTitle}>Пока всё</Text>
           <Text style={styles.emptyText}>Новые подработки скоро появятся.</Text>
           <TouchableOpacity style={styles.refreshButton} onPress={handleRefresh}>
-            <RefreshCw size={17} color="#000000" style={styles.buttonIcon} />
+            <Ionicons name="refresh" size={17} color="#000000" style={styles.buttonIcon} />
             <Text style={styles.refreshButtonText}>Обновить</Text>
           </TouchableOpacity>
         </View>
@@ -168,7 +168,7 @@ export const JobFeedScreen: React.FC = () => {
           }
           style={styles.adminButton}
         >
-          <LockKeyhole size={18} color={theme.colors.textMuted} />
+          <Ionicons name="lock-closed" size={18} color={theme.colors.textMuted} />
         </TouchableOpacity>
       </View>
 

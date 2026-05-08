@@ -19,7 +19,7 @@ import {
 } from '../../supabase/client';
 import { WorkerProfile } from '../../types';
 import { theme } from '../../utils/theme';
-import { ArrowLeft, BadgeCheck, Camera, Check, IdCard, RefreshCw, X } from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 type WorkerWithSignedUrls = WorkerProfile & {
   passportSignedUrl?: string | null;
@@ -108,7 +108,7 @@ export const AdminWorkerVerificationScreen: React.FC = () => {
         <View style={styles.docsRow}>
           <View style={styles.docBlock}>
             <View style={styles.docLabelRow}>
-              <IdCard size={15} color={theme.colors.textSecondary} />
+              <Ionicons name="id-card" size={15} color={theme.colors.textSecondary} />
               <Text style={styles.docLabel}>Паспорт</Text>
             </View>
             {item.passportSignedUrl ? (
@@ -121,7 +121,7 @@ export const AdminWorkerVerificationScreen: React.FC = () => {
           </View>
           <View style={styles.docBlock}>
             <View style={styles.docLabelRow}>
-              <Camera size={15} color={theme.colors.textSecondary} />
+              <Ionicons name="camera" size={15} color={theme.colors.textSecondary} />
               <Text style={styles.docLabel}>Селфи</Text>
             </View>
             {item.selfieSignedUrl ? (
@@ -143,14 +143,14 @@ export const AdminWorkerVerificationScreen: React.FC = () => {
               style={[styles.btn, styles.verifyBtn]}
               onPress={() => handleVerify(item)}
             >
-              <Check size={16} color="#000000" />
+              <Ionicons name="checkmark" size={16} color="#000000" />
               <Text style={styles.verifyBtnText}>Верифицировать</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.btn, styles.rejectBtn]}
               onPress={() => handleReject(item)}
             >
-              <X size={16} color={theme.colors.danger} />
+              <Ionicons name="close" size={16} color={theme.colors.danger} />
               <Text style={styles.rejectBtnText}>Отклонить</Text>
             </TouchableOpacity>
           </View>
@@ -164,7 +164,7 @@ export const AdminWorkerVerificationScreen: React.FC = () => {
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <View style={styles.backRow}>
-            <ArrowLeft size={18} color={theme.colors.textSecondary} />
+            <Ionicons name="arrow-back" size={18} color={theme.colors.textSecondary} />
             <Text style={styles.back}>Назад</Text>
           </View>
         </TouchableOpacity>
@@ -178,11 +178,11 @@ export const AdminWorkerVerificationScreen: React.FC = () => {
         </View>
       ) : workers.length === 0 ? (
         <View style={styles.center}>
-          <BadgeCheck size={48} color={theme.colors.success} />
+          <Ionicons name="shield-checkmark" size={48} color={theme.colors.success} />
           <Text style={styles.emptyTitle}>Все проверено</Text>
           <Text style={styles.emptyText}>Нет ожидающих верификации работников</Text>
           <TouchableOpacity style={styles.refreshBtn} onPress={load}>
-            <RefreshCw size={16} color="#000000" />
+            <Ionicons name="refresh" size={16} color="#000000" />
             <Text style={styles.refreshBtnText}>Обновить</Text>
           </TouchableOpacity>
         </View>

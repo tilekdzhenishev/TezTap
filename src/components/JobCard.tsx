@@ -1,18 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import {
-  Banknote,
-  BriefcaseBusiness,
-  Check,
-  Clock,
-  MapPin,
-  Phone,
-  Rocket,
-  ShieldCheck,
-  Star,
-  Timer,
-  X,
-} from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { Job } from '../types';
 import { theme } from '../utils/theme';
 
@@ -45,29 +33,49 @@ export const JobCard: React.FC<JobCardProps> = ({
           accessibilityRole="button"
           accessibilityLabel={isSaved ? 'Удалить из сохраненных' : 'Сохранить вакансию'}
         >
-          <Star
+          <Ionicons
+            name={isSaved ? 'star' : 'star-outline'}
             size={18}
             color={isSaved ? '#000000' : theme.colors.primary}
-            fill={isSaved ? '#000000' : 'transparent'}
           />
         </TouchableOpacity>
       </View>
 
       <View style={styles.details}>
         <View style={styles.detailRow}>
-          <Banknote size={16} color={theme.colors.textSecondary} style={styles.detailIcon} />
+          <Ionicons
+            name="cash"
+            size={16}
+            color={theme.colors.textSecondary}
+            style={styles.detailIcon}
+          />
           <Text style={styles.detailText}>{job.payment}</Text>
         </View>
         <View style={styles.detailRow}>
-          <Timer size={16} color={theme.colors.textSecondary} style={styles.detailIcon} />
+          <Ionicons
+            name="timer"
+            size={16}
+            color={theme.colors.textSecondary}
+            style={styles.detailIcon}
+          />
           <Text style={styles.detailText}>{job.duration}</Text>
         </View>
         <View style={styles.detailRow}>
-          <Clock size={16} color={theme.colors.textSecondary} style={styles.detailIcon} />
+          <Ionicons
+            name="time"
+            size={16}
+            color={theme.colors.textSecondary}
+            style={styles.detailIcon}
+          />
           <Text style={styles.detailText}>{job.schedule}</Text>
         </View>
         <View style={styles.detailRow}>
-          <MapPin size={16} color={theme.colors.textSecondary} style={styles.detailIcon} />
+          <Ionicons
+            name="location"
+            size={16}
+            color={theme.colors.textSecondary}
+            style={styles.detailIcon}
+          />
           <Text style={styles.detailText}>{job.location}</Text>
         </View>
       </View>
@@ -81,11 +89,21 @@ export const JobCard: React.FC<JobCardProps> = ({
       {job.company_name && (
         <View style={styles.companyBlock}>
           <View style={styles.inlineRow}>
-            <ShieldCheck size={15} color={theme.colors.success} style={styles.inlineIcon} />
+            <Ionicons
+              name="shield-checkmark"
+              size={15}
+              color={theme.colors.success}
+              style={styles.inlineIcon}
+            />
             <Text style={styles.verifiedBadge}>Проверенный работодатель</Text>
           </View>
           <View style={styles.inlineRow}>
-            <BriefcaseBusiness size={16} color={theme.colors.text} style={styles.inlineIcon} />
+            <Ionicons
+              name="briefcase"
+              size={16}
+              color={theme.colors.text}
+              style={styles.inlineIcon}
+            />
             <Text style={styles.companyName}>{job.company_name}</Text>
           </View>
         </View>
@@ -98,9 +116,14 @@ export const JobCard: React.FC<JobCardProps> = ({
           disabled={hasApplied}
         >
           {hasApplied ? (
-            <Check size={18} color={theme.colors.success} style={styles.buttonIcon} />
+            <Ionicons
+              name="checkmark"
+              size={18}
+              color={theme.colors.success}
+              style={styles.buttonIcon}
+            />
           ) : (
-            <Rocket size={18} color="#000000" style={styles.buttonIcon} />
+            <Ionicons name="rocket" size={18} color="#000000" style={styles.buttonIcon} />
           )}
           <Text style={[styles.applyButtonText, hasApplied && styles.applyButtonTextDone]}>
             {hasApplied ? 'Заявка отправлена' : 'Выйти на смену'}
@@ -110,12 +133,17 @@ export const JobCard: React.FC<JobCardProps> = ({
 
       <View style={styles.actions}>
         <TouchableOpacity style={[styles.actionButton, styles.skipButton]} onPress={onSkip}>
-          <X size={18} color={theme.colors.textSecondary} style={styles.buttonIcon} />
+          <Ionicons
+            name="close"
+            size={18}
+            color={theme.colors.textSecondary}
+            style={styles.buttonIcon}
+          />
           <Text style={styles.skipButtonText}>Пропустить</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={[styles.actionButton, styles.contactButton]} onPress={onContact}>
-          <Phone size={18} color="#000000" style={styles.buttonIcon} />
+          <Ionicons name="call" size={18} color="#000000" style={styles.buttonIcon} />
           <Text style={styles.contactButtonText}>Связаться</Text>
         </TouchableOpacity>
       </View>

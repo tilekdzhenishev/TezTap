@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import { ArrowLeft, LockKeyhole } from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/navigation';
@@ -39,7 +39,12 @@ export const AdminAuthScreen: React.FC = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <View style={styles.titleRow}>
-          <LockKeyhole size={30} color={theme.colors.admin} style={styles.titleIcon} />
+          <Ionicons
+            name="lock-closed"
+            size={30}
+            color={theme.colors.admin}
+            style={styles.titleIcon}
+          />
           <Text style={styles.title}>Admin</Text>
         </View>
         <Text style={styles.subtitle}>Введите код администратора</Text>
@@ -61,7 +66,12 @@ export const AdminAuthScreen: React.FC = () => {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <ArrowLeft size={17} color={theme.colors.textSecondary} style={styles.buttonIcon} />
+          <Ionicons
+            name="arrow-back"
+            size={17}
+            color={theme.colors.textSecondary}
+            style={styles.buttonIcon}
+          />
           <Text style={styles.backButtonText}>Назад</Text>
         </TouchableOpacity>
       </View>

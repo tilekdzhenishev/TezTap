@@ -9,7 +9,7 @@ import {
   Animated,
   Alert,
 } from 'react-native';
-import { ArrowLeft, KeyRound, Mail } from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -65,7 +65,7 @@ export const ForgotPasswordScreen: React.FC = () => {
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-          <ArrowLeft size={24} color="#FFFFFF" />
+          <Ionicons name="arrow-back" size={24} color="#FFFFFF" />
         </TouchableOpacity>
 
         <Animated.View
@@ -73,7 +73,7 @@ export const ForgotPasswordScreen: React.FC = () => {
         >
           {!sent ? (
             <>
-              <KeyRound size={42} color="#FF8C00" style={styles.icon} />
+              <Ionicons name="key" size={42} color="#FF8C00" style={styles.icon} />
               <Text style={styles.title}>Сбросить пароль</Text>
               <Text style={styles.subtitle}>
                 Введите ваш email, и мы отправим ссылку для сброса пароля.
@@ -99,7 +99,7 @@ export const ForgotPasswordScreen: React.FC = () => {
             </>
           ) : (
             <>
-              <Mail size={42} color="#FF8C00" style={styles.icon} />
+              <Ionicons name="mail" size={42} color="#FF8C00" style={styles.icon} />
               <Text style={styles.title}>Письмо отправлено</Text>
               <Text style={styles.subtitle}>
                 Мы отправили ссылку для сброса пароля на{'\n'}

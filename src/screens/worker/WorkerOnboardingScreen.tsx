@@ -18,18 +18,7 @@ import { useAuth } from '../../auth/AuthContext';
 import { createWorkerProfile, uploadWorkerDoc } from '../../supabase/client';
 import { RootStackParamList } from '../../types/navigation';
 import { theme } from '../../utils/theme';
-import {
-  ArrowLeft,
-  ArrowRight,
-  BadgeCheck,
-  Cake,
-  Camera,
-  CheckCircle,
-  IdCard,
-  Image as ImageIcon,
-  Smartphone,
-  User,
-} from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
 
@@ -150,7 +139,7 @@ export const WorkerOnboardingScreen: React.FC = () => {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.successContent}>
-          <CheckCircle size={64} color={theme.colors.success} />
+          <Ionicons name="checkmark-circle" size={64} color={theme.colors.success} />
           <Text style={styles.successTitle}>Профиль отправлен на проверку</Text>
           <Text style={styles.successDesc}>
             Мы проверим ваши документы в течение 1–2 рабочих дней.{'\n\n'}
@@ -158,7 +147,7 @@ export const WorkerOnboardingScreen: React.FC = () => {
           </Text>
           <TouchableOpacity style={styles.doneBtn} onPress={() => navigation.goBack()}>
             <Text style={styles.doneBtnText}>Перейти к вакансиям</Text>
-            <ArrowRight size={18} color="#000000" />
+            <Ionicons name="arrow-forward" size={18} color="#000000" />
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -175,7 +164,7 @@ export const WorkerOnboardingScreen: React.FC = () => {
         {/* Back button */}
         {step > 1 && (
           <TouchableOpacity style={styles.backBtn} onPress={() => setStep(step - 1)}>
-            <ArrowLeft size={18} color={theme.colors.textSecondary} />
+            <Ionicons name="arrow-back" size={18} color={theme.colors.textSecondary} />
             <Text style={styles.backBtnText}>Назад</Text>
           </TouchableOpacity>
         )}
@@ -195,7 +184,12 @@ export const WorkerOnboardingScreen: React.FC = () => {
           {/* Step 1 — Full name */}
           {step === 1 && (
             <>
-              <User size={44} color={theme.colors.primary} style={styles.stepIconSvg} />
+              <Ionicons
+                name="person"
+                size={44}
+                color={theme.colors.primary}
+                style={styles.stepIconSvg}
+              />
               <Text style={styles.stepTitle}>Как вас зовут?</Text>
               <Text style={styles.stepDesc}>Ваше имя будет видно работодателям</Text>
               <TextInput
@@ -214,7 +208,12 @@ export const WorkerOnboardingScreen: React.FC = () => {
           {/* Step 2 — Phone number */}
           {step === 2 && (
             <>
-              <Smartphone size={44} color={theme.colors.primary} style={styles.stepIconSvg} />
+              <Ionicons
+                name="phone-portrait"
+                size={44}
+                color={theme.colors.primary}
+                style={styles.stepIconSvg}
+              />
               <Text style={styles.stepTitle}>Введите номер телефона</Text>
               <Text style={styles.stepDesc}>
                 Работодатели смогут связаться с вами после подтверждения заявки
@@ -241,7 +240,12 @@ export const WorkerOnboardingScreen: React.FC = () => {
           {/* Step 3 — Birth year */}
           {step === 3 && (
             <>
-              <Cake size={44} color={theme.colors.primary} style={styles.stepIconSvg} />
+              <Ionicons
+                name="gift"
+                size={44}
+                color={theme.colors.primary}
+                style={styles.stepIconSvg}
+              />
               <Text style={styles.stepTitle}>Введите год рождения</Text>
               <Text style={styles.stepDesc}>
                 Нужен для верификации. Минимальный возраст — 16 лет.
@@ -262,7 +266,12 @@ export const WorkerOnboardingScreen: React.FC = () => {
           {/* Step 4 — Passport */}
           {step === 4 && (
             <>
-              <IdCard size={44} color={theme.colors.primary} style={styles.stepIconSvg} />
+              <Ionicons
+                name="id-card"
+                size={44}
+                color={theme.colors.primary}
+                style={styles.stepIconSvg}
+              />
               <Text style={styles.stepTitle}>Загрузите фото паспорта</Text>
               <View style={styles.hintBox}>
                 <Text style={styles.hintItem}>• Документ должен быть читаемым</Text>
@@ -282,14 +291,14 @@ export const WorkerOnboardingScreen: React.FC = () => {
                     style={styles.uploadBtn}
                     onPress={() => pickFromLibrary(setPassportUri)}
                   >
-                    <ImageIcon size={28} color={theme.colors.textSecondary} />
+                    <Ionicons name="image" size={28} color={theme.colors.textSecondary} />
                     <Text style={styles.uploadLabel}>Галерея</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.uploadBtn}
                     onPress={() => pickFromCamera(setPassportUri)}
                   >
-                    <Camera size={28} color={theme.colors.textSecondary} />
+                    <Ionicons name="camera" size={28} color={theme.colors.textSecondary} />
                     <Text style={styles.uploadLabel}>Камера</Text>
                   </TouchableOpacity>
                 </View>
@@ -303,7 +312,12 @@ export const WorkerOnboardingScreen: React.FC = () => {
           {/* Step 5 — Selfie */}
           {step === 5 && (
             <>
-              <BadgeCheck size={44} color={theme.colors.primary} style={styles.stepIconSvg} />
+              <Ionicons
+                name="shield-checkmark"
+                size={44}
+                color={theme.colors.primary}
+                style={styles.stepIconSvg}
+              />
               <Text style={styles.stepTitle}>Сделайте селфи</Text>
               <View style={styles.hintBox}>
                 <Text style={styles.hintItem}>• Лицо должно быть хорошо видно</Text>
@@ -323,14 +337,14 @@ export const WorkerOnboardingScreen: React.FC = () => {
                     style={styles.uploadBtn}
                     onPress={() => pickFromCamera(setSelfieUri)}
                   >
-                    <Camera size={28} color={theme.colors.textSecondary} />
+                    <Ionicons name="camera" size={28} color={theme.colors.textSecondary} />
                     <Text style={styles.uploadLabel}>Камера</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.uploadBtn}
                     onPress={() => pickFromLibrary(setSelfieUri)}
                   >
-                    <ImageIcon size={28} color={theme.colors.textSecondary} />
+                    <Ionicons name="image" size={28} color={theme.colors.textSecondary} />
                     <Text style={styles.uploadLabel}>Галерея</Text>
                   </TouchableOpacity>
                 </View>
@@ -350,7 +364,7 @@ export const WorkerOnboardingScreen: React.FC = () => {
             disabled={!canProceed() || submitting}
           >
             <Text style={styles.nextBtnText}>Далее</Text>
-            <ArrowRight size={18} color="#000000" />
+            <Ionicons name="arrow-forward" size={18} color="#000000" />
           </TouchableOpacity>
         )}
 
@@ -367,7 +381,7 @@ export const WorkerOnboardingScreen: React.FC = () => {
                 <Text style={styles.nextBtnText}>
                   {step === 5 ? 'Отправить на проверку' : 'Далее'}
                 </Text>
-                {step !== 5 && <ArrowRight size={18} color="#000000" />}
+                {step !== 5 && <Ionicons name="arrow-forward" size={18} color="#000000" />}
               </>
             )}
           </TouchableOpacity>

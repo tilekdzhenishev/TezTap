@@ -8,19 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import {
-  Ban,
-  BriefcaseBusiness,
-  Check,
-  ClipboardList,
-  RefreshCw,
-  ShieldCheck,
-  Users,
-  X,
-  Hourglass,
-  Plus,
-  ArrowRight,
-} from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useAuth } from '../auth/AuthContext';
@@ -84,7 +72,7 @@ export const EmployerPortalScreen: React.FC = () => {
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={styles.center}>
-          <BriefcaseBusiness size={52} color={theme.colors.primary} />
+          <Ionicons name="briefcase" size={52} color={theme.colors.primary} />
           <Text style={styles.statusTitle}>Для работодателей</Text>
           <Text style={styles.statusDesc}>
             Этот раздел предназначен для верифицированных работодателей.
@@ -103,14 +91,19 @@ export const EmployerPortalScreen: React.FC = () => {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.center}>
-          <Hourglass size={52} color={theme.colors.primary} />
+          <Ionicons name="hourglass" size={52} color={theme.colors.primary} />
           <Text style={styles.statusTitle}>Заявка на рассмотрении</Text>
           <Text style={styles.statusName}>{employer?.business_name}</Text>
           <Text style={styles.statusDesc}>
             Мы проверяем данные вашей компании. Обычно 1–2 рабочих дня.
           </Text>
           <TouchableOpacity style={styles.refreshBtn} onPress={load}>
-            <RefreshCw size={17} color={theme.colors.textSecondary} style={styles.buttonIcon} />
+            <Ionicons
+              name="refresh"
+              size={17}
+              color={theme.colors.textSecondary}
+              style={styles.buttonIcon}
+            />
             <Text style={styles.refreshBtnText}>Проверить статус</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.signOutBtn} onPress={signOut}>
@@ -127,7 +120,12 @@ export const EmployerPortalScreen: React.FC = () => {
         <ScrollView contentContainerStyle={styles.approvedContent}>
           <View style={styles.approvedHeader}>
             <View style={styles.verifiedBadge}>
-              <ShieldCheck size={13} color={theme.colors.success} style={styles.badgeIcon} />
+              <Ionicons
+                name="shield-checkmark"
+                size={13}
+                color={theme.colors.success}
+                style={styles.badgeIcon}
+              />
               <Text style={styles.verifiedBadgeText}>ВЕРИФИЦИРОВАН</Text>
             </View>
             <Text style={styles.companyName}>{employer?.business_name}</Text>
@@ -143,7 +141,7 @@ export const EmployerPortalScreen: React.FC = () => {
                 ?.navigate('SubmitJob', { employerId: employer.id });
             }}
           >
-            <Plus size={32} color="#000000" style={styles.postButtonIcon} />
+            <Ionicons name="add" size={32} color="#000000" style={styles.postButtonIcon} />
             <View>
               <Text style={styles.postButtonTitle}>Разместить смену</Text>
               <Text style={styles.postButtonSubtitle}>Найдите сотрудника сегодня</Text>
@@ -154,15 +152,28 @@ export const EmployerPortalScreen: React.FC = () => {
             <Text style={styles.infoTitle}>Как это работает</Text>
             {[
               {
-                Icon: ClipboardList,
+                iconName: 'list' as const,
                 title: 'Опишите смену',
                 sub: 'Укажите задачу, оплату и время',
               },
-              { Icon: Check, title: 'Модерация', sub: 'Мы проверим объявление за 1–2 часа' },
-              { Icon: Users, title: 'Получите отклики', sub: 'Соискатели напишут напрямую вам' },
-            ].map(({ Icon, title, sub }) => (
+              {
+                iconName: 'checkmark' as const,
+                title: 'Модерация',
+                sub: 'Мы проверим объявление за 1–2 часа',
+              },
+              {
+                iconName: 'people' as const,
+                title: 'Получите отклики',
+                sub: 'Соискатели напишут напрямую вам',
+              },
+            ].map(({ iconName, title, sub }) => (
               <View key={title} style={styles.infoRow}>
-                <Icon size={20} color={theme.colors.primary} style={styles.infoRowIcon} />
+                <Ionicons
+                  name={iconName}
+                  size={20}
+                  color={theme.colors.primary}
+                  style={styles.infoRowIcon}
+                />
                 <View style={styles.infoRowText}>
                   <Text style={styles.infoRowTitle}>{title}</Text>
                   <Text style={styles.infoRowSub}>{sub}</Text>
@@ -190,19 +201,26 @@ export const EmployerPortalScreen: React.FC = () => {
                     </Text>
                     <View style={styles.jobStatusRow}>
                       {job.status === 'approved' ? (
-                        <Check
+                        <Ionicons
+                          name="checkmark"
                           size={13}
                           color={theme.colors.success}
                           style={styles.statusSmallIcon}
                         />
                       ) : job.status === 'pending' ? (
-                        <Hourglass
+                        <Ionicons
+                          name="hourglass"
                           size={13}
                           color={theme.colors.admin}
                           style={styles.statusSmallIcon}
                         />
                       ) : (
-                        <X size={13} color={theme.colors.danger} style={styles.statusSmallIcon} />
+                        <Ionicons
+                          name="close"
+                          size={13}
+                          color={theme.colors.danger}
+                          style={styles.statusSmallIcon}
+                        />
                       )}
                       <Text style={styles.jobRowStatus}>
                         {job.status === 'approved'
@@ -214,9 +232,14 @@ export const EmployerPortalScreen: React.FC = () => {
                     </View>
                   </View>
                   <View style={styles.jobRowArrow}>
-                    <Users size={14} color={theme.colors.primary} style={styles.buttonIcon} />
+                    <Ionicons
+                      name="people"
+                      size={14}
+                      color={theme.colors.primary}
+                      style={styles.buttonIcon}
+                    />
                     <Text style={styles.jobRowArrowText}>Заявки</Text>
-                    <ArrowRight size={14} color={theme.colors.primary} />
+                    <Ionicons name="arrow-forward" size={14} color={theme.colors.primary} />
                   </View>
                 </TouchableOpacity>
               ))}
@@ -235,7 +258,7 @@ export const EmployerPortalScreen: React.FC = () => {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.center}>
-          <X size={52} color={theme.colors.danger} />
+          <Ionicons name="close-circle" size={52} color={theme.colors.danger} />
           <Text style={styles.statusTitle}>Заявка отклонена</Text>
           <Text style={styles.statusName}>{employer?.business_name}</Text>
           {employer?.review_notes ? (
@@ -255,7 +278,7 @@ export const EmployerPortalScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.center}>
-        <Ban size={52} color={theme.colors.danger} />
+        <Ionicons name="ban" size={52} color={theme.colors.danger} />
         <Text style={styles.statusTitle}>Аккаунт приостановлен</Text>
         <Text style={styles.statusName}>{employer?.business_name}</Text>
         <Text style={styles.statusDesc}>Свяжитесь с поддержкой для восстановления доступа.</Text>

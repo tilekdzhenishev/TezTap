@@ -20,7 +20,7 @@ import {
 } from '../../supabase/client';
 import { JobApplication } from '../../types';
 import { theme } from '../../utils/theme';
-import { ArrowLeft, Check, Star, Users, X } from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 type Route = RouteProp<RootStackParamList, 'EmployerApplications'>;
 
@@ -120,7 +120,7 @@ export const EmployerApplicationsScreen: React.FC = () => {
               <Text style={styles.metaTag}>{completed} смен</Text>
               {verStatus === 'verified' && (
                 <View style={styles.verifiedTag}>
-                  <Check size={12} color={theme.colors.success} />
+                  <Ionicons name="checkmark" size={12} color={theme.colors.success} />
                   <Text style={styles.verified}>Верифицирован</Text>
                 </View>
               )}
@@ -141,14 +141,14 @@ export const EmployerApplicationsScreen: React.FC = () => {
               style={[styles.btn, styles.acceptBtn]}
               onPress={() => handleAccept(item)}
             >
-              <Check size={16} color="#fff" />
+              <Ionicons name="checkmark" size={16} color="#fff" />
               <Text style={styles.acceptBtnText}>Принять</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.btn, styles.rejectBtn]}
               onPress={() => handleReject(item)}
             >
-              <X size={16} color={theme.colors.danger} />
+              <Ionicons name="close" size={16} color={theme.colors.danger} />
               <Text style={styles.rejectBtnText}>Отклонить</Text>
             </TouchableOpacity>
           </View>
@@ -179,7 +179,7 @@ export const EmployerApplicationsScreen: React.FC = () => {
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <View style={styles.backRow}>
-            <ArrowLeft size={18} color={theme.colors.textSecondary} />
+            <Ionicons name="arrow-back" size={18} color={theme.colors.textSecondary} />
             <Text style={styles.back}>Назад</Text>
           </View>
         </TouchableOpacity>
@@ -194,7 +194,7 @@ export const EmployerApplicationsScreen: React.FC = () => {
         </View>
       ) : applications.length === 0 ? (
         <View style={styles.center}>
-          <Users size={48} color={theme.colors.textMuted} />
+          <Ionicons name="people" size={48} color={theme.colors.textMuted} />
           <Text style={styles.emptyTitle}>Нет заявок</Text>
           <Text style={styles.emptyText}>Соискатели ещё не откликнулись на эту вакансию</Text>
         </View>
@@ -217,7 +217,7 @@ export const EmployerApplicationsScreen: React.FC = () => {
             <View style={styles.starsRow}>
               {[1, 2, 3, 4, 5].map((s) => (
                 <TouchableOpacity key={s} onPress={() => submitRating(s)}>
-                  <Star size={36} color={theme.colors.primary} fill={theme.colors.primary} />
+                  <Ionicons name="star" size={36} color={theme.colors.primary} />
                 </TouchableOpacity>
               ))}
             </View>

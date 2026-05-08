@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
   Linking,
 } from 'react-native';
-import { Banknote, MapPin, Phone, Timer, X } from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useStore } from '../store/appStore';
 import { SavedJob } from '../types';
 import { theme } from '../utils/theme';
@@ -38,20 +38,35 @@ export const SavedJobsScreen: React.FC = () => {
         <View style={styles.cardHeader}>
           <Text style={styles.title}>{job.title}</Text>
           <TouchableOpacity style={styles.unsaveButton} onPress={() => unsaveJob(item.id)}>
-            <X size={16} color={theme.colors.textSecondary} />
+            <Ionicons name="close" size={16} color={theme.colors.textSecondary} />
           </TouchableOpacity>
         </View>
 
         <View style={styles.detailRow}>
-          <Banknote size={15} color={theme.colors.textSecondary} style={styles.detailIcon} />
+          <Ionicons
+            name="cash"
+            size={15}
+            color={theme.colors.textSecondary}
+            style={styles.detailIcon}
+          />
           <Text style={styles.detailText}>{job.payment}</Text>
         </View>
         <View style={styles.detailRow}>
-          <Timer size={15} color={theme.colors.textSecondary} style={styles.detailIcon} />
+          <Ionicons
+            name="timer"
+            size={15}
+            color={theme.colors.textSecondary}
+            style={styles.detailIcon}
+          />
           <Text style={styles.detailText}>{job.duration}</Text>
         </View>
         <View style={styles.detailRow}>
-          <MapPin size={15} color={theme.colors.textSecondary} style={styles.detailIcon} />
+          <Ionicons
+            name="location"
+            size={15}
+            color={theme.colors.textSecondary}
+            style={styles.detailIcon}
+          />
           <Text style={styles.detailText}>{job.location}</Text>
         </View>
 
@@ -59,7 +74,7 @@ export const SavedJobsScreen: React.FC = () => {
           style={styles.contactButton}
           onPress={() => handleContact(job.contact_url)}
         >
-          <Phone size={17} color="#000000" style={styles.buttonIcon} />
+          <Ionicons name="call" size={17} color="#000000" style={styles.buttonIcon} />
           <Text style={styles.contactButtonText}>Связаться</Text>
         </TouchableOpacity>
       </View>

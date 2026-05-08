@@ -8,7 +8,7 @@ import {
   StyleSheet,
   KeyboardTypeOptions,
 } from 'react-native';
-import { Eye, EyeOff } from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { theme } from '../../utils/theme';
 
 interface AuthInputProps {
@@ -98,11 +98,11 @@ export const AuthInput: React.FC<AuthInputProps> = ({
         />
         {secureTextEntry && (
           <TouchableOpacity onPress={() => setHidden((h) => !h)} style={styles.eyeButton}>
-            {hidden ? (
-              <Eye size={18} color={theme.colors.textSecondary} />
-            ) : (
-              <EyeOff size={18} color={theme.colors.textSecondary} />
-            )}
+            <Ionicons
+              name={hidden ? 'eye' : 'eye-off'}
+              size={18}
+              color={theme.colors.textSecondary}
+            />
           </TouchableOpacity>
         )}
       </View>

@@ -15,16 +15,7 @@ import { JobDraft, DURATION_OPTIONS, EXPERIENCE_OPTIONS } from '../types';
 import { submitJob } from '../supabase/client';
 import { RootStackParamList } from '../types/navigation';
 import { theme } from '../utils/theme';
-import {
-  ArrowLeft,
-  ArrowRight,
-  BriefcaseBusiness,
-  CheckCircle,
-  Clock,
-  MapPin,
-  Timer,
-  X,
-} from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 type SubmitJobRouteProp = RouteProp<RootStackParamList, 'SubmitJob'>;
 
@@ -131,7 +122,7 @@ export const SubmitJobScreen: React.FC = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.closeButton}>
-          <X size={20} color={theme.colors.textMuted} />
+          <Ionicons name="close" size={20} color={theme.colors.textMuted} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Разместить смену</Text>
         <Text style={styles.stepIndicator}>
@@ -171,7 +162,7 @@ export const SubmitJobScreen: React.FC = () => {
       <View style={styles.footer}>
         {step > 0 && step < STEPS.length - 1 && (
           <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-            <ArrowLeft size={18} color={theme.colors.textSecondary} />
+            <Ionicons name="arrow-back" size={18} color={theme.colors.textSecondary} />
             <Text style={styles.backButtonText}>Назад</Text>
           </TouchableOpacity>
         )}
@@ -179,7 +170,7 @@ export const SubmitJobScreen: React.FC = () => {
         {step < STEPS.length - 1 && (
           <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
             <Text style={styles.nextButtonText}>Далее</Text>
-            <ArrowRight size={18} color="#000000" />
+            <Ionicons name="arrow-forward" size={18} color="#000000" />
           </TouchableOpacity>
         )}
 
@@ -189,7 +180,7 @@ export const SubmitJobScreen: React.FC = () => {
               <Text style={styles.resetButtonText}>Заново</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-              <ArrowLeft size={18} color={theme.colors.textSecondary} />
+              <Ionicons name="arrow-back" size={18} color={theme.colors.textSecondary} />
               <Text style={styles.backButtonText}>Изменить</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -455,15 +446,15 @@ const StepPreview: React.FC<{ draft: JobDraft }> = ({ draft }) => (
       <View style={styles.previewDetails}>
         <Text style={styles.previewDetail}>{draft.payment}</Text>
         <View style={styles.previewDetailRow}>
-          <Timer size={14} color={theme.colors.textSecondary} />
+          <Ionicons name="timer" size={14} color={theme.colors.textSecondary} />
           <Text style={styles.previewDetail}>{draft.duration}</Text>
         </View>
         <View style={styles.previewDetailRow}>
-          <Clock size={14} color={theme.colors.textSecondary} />
+          <Ionicons name="time" size={14} color={theme.colors.textSecondary} />
           <Text style={styles.previewDetail}>{draft.schedule}</Text>
         </View>
         <View style={styles.previewDetailRow}>
-          <MapPin size={14} color={theme.colors.textSecondary} />
+          <Ionicons name="location" size={14} color={theme.colors.textSecondary} />
           <Text style={styles.previewDetail}>{draft.location}</Text>
         </View>
       </View>
@@ -471,12 +462,12 @@ const StepPreview: React.FC<{ draft: JobDraft }> = ({ draft }) => (
       {draft.experience && <Text style={styles.previewExperience}>{draft.experience}</Text>}
       <View style={styles.previewDivider} />
       <View style={styles.previewDetailRow}>
-        <CheckCircle size={14} color={theme.colors.success} />
+        <Ionicons name="checkmark-circle" size={14} color={theme.colors.success} />
         <Text style={styles.previewVerified}>Проверенный работодатель</Text>
       </View>
       {draft.company_name && (
         <View style={styles.previewDetailRow}>
-          <BriefcaseBusiness size={14} color={theme.colors.textSecondary} />
+          <Ionicons name="briefcase" size={14} color={theme.colors.textSecondary} />
           <Text style={styles.previewCompany}>{draft.company_name}</Text>
         </View>
       )}

@@ -1,16 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native';
-import {
-  Banknote,
-  BriefcaseBusiness,
-  Check,
-  Clock,
-  Hourglass,
-  MapPin,
-  Phone,
-  Timer,
-  X,
-} from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { Job } from '../types';
 import { theme } from '../utils/theme';
 
@@ -31,7 +21,7 @@ export const AdminJobCard: React.FC<AdminJobCardProps> = ({ job, onApprove, onRe
   return (
     <View style={styles.card}>
       <View style={styles.statusBadge}>
-        <Hourglass size={14} color={theme.colors.admin} style={styles.badgeIcon} />
+        <Ionicons name="hourglass" size={14} color={theme.colors.admin} style={styles.badgeIcon} />
         <Text style={styles.statusText}>Ожидает проверки</Text>
       </View>
 
@@ -39,19 +29,39 @@ export const AdminJobCard: React.FC<AdminJobCardProps> = ({ job, onApprove, onRe
 
       <View style={styles.details}>
         <View style={styles.detailRow}>
-          <Banknote size={16} color={theme.colors.textSecondary} style={styles.detailIcon} />
+          <Ionicons
+            name="cash"
+            size={16}
+            color={theme.colors.textSecondary}
+            style={styles.detailIcon}
+          />
           <Text style={styles.detailText}>{job.payment}</Text>
         </View>
         <View style={styles.detailRow}>
-          <Timer size={16} color={theme.colors.textSecondary} style={styles.detailIcon} />
+          <Ionicons
+            name="timer"
+            size={16}
+            color={theme.colors.textSecondary}
+            style={styles.detailIcon}
+          />
           <Text style={styles.detailText}>{job.duration}</Text>
         </View>
         <View style={styles.detailRow}>
-          <Clock size={16} color={theme.colors.textSecondary} style={styles.detailIcon} />
+          <Ionicons
+            name="time"
+            size={16}
+            color={theme.colors.textSecondary}
+            style={styles.detailIcon}
+          />
           <Text style={styles.detailText}>{job.schedule}</Text>
         </View>
         <View style={styles.detailRow}>
-          <MapPin size={16} color={theme.colors.textSecondary} style={styles.detailIcon} />
+          <Ionicons
+            name="location"
+            size={16}
+            color={theme.colors.textSecondary}
+            style={styles.detailIcon}
+          />
           <Text style={styles.detailText}>{job.location}</Text>
         </View>
       </View>
@@ -62,19 +72,24 @@ export const AdminJobCard: React.FC<AdminJobCardProps> = ({ job, onApprove, onRe
 
       {job.company_name && (
         <View style={styles.inlineRow}>
-          <BriefcaseBusiness size={16} color={theme.colors.text} style={styles.inlineIcon} />
+          <Ionicons
+            name="briefcase"
+            size={16}
+            color={theme.colors.text}
+            style={styles.inlineIcon}
+          />
           <Text style={styles.companyName}>{job.company_name}</Text>
         </View>
       )}
 
       <View style={styles.inlineRow}>
-        <Phone size={15} color={theme.colors.textMuted} style={styles.inlineIcon} />
+        <Ionicons name="call" size={15} color={theme.colors.textMuted} style={styles.inlineIcon} />
         <Text style={styles.contactLabel}>Контакт: {job.contact_url}</Text>
       </View>
 
       <View style={styles.actions}>
         <TouchableOpacity style={[styles.actionButton, styles.rejectButton]} onPress={onReject}>
-          <X size={18} color={theme.colors.danger} style={styles.buttonIcon} />
+          <Ionicons name="close" size={18} color={theme.colors.danger} style={styles.buttonIcon} />
           <Text style={styles.rejectButtonText}>Отклонить</Text>
         </TouchableOpacity>
 
@@ -82,12 +97,17 @@ export const AdminJobCard: React.FC<AdminJobCardProps> = ({ job, onApprove, onRe
           style={[styles.actionButton, styles.contactPreviewButton]}
           onPress={handleContact}
         >
-          <Phone size={18} color={theme.colors.textSecondary} style={styles.buttonIcon} />
+          <Ionicons
+            name="call"
+            size={18}
+            color={theme.colors.textSecondary}
+            style={styles.buttonIcon}
+          />
           <Text style={styles.contactPreviewButtonText}>Проверить контакт</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={[styles.actionButton, styles.approveButton]} onPress={onApprove}>
-          <Check size={18} color="#000000" style={styles.buttonIcon} />
+          <Ionicons name="checkmark" size={18} color="#000000" style={styles.buttonIcon} />
           <Text style={styles.approveButtonText}>Опубликовать</Text>
         </TouchableOpacity>
       </View>

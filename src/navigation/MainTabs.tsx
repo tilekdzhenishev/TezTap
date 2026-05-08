@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { BriefcaseBusiness, LockKeyhole, User, Star } from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { JobFeedScreen } from '../screens/JobFeedScreen';
@@ -23,7 +23,7 @@ const ProfileTab: React.FC = () => {
 export const MainTabs: React.FC = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   let pressCount = 0;
-  let pressTimer: NodeJS.Timeout | null = null;
+  let pressTimer: ReturnType<typeof setTimeout> | null = null;
 
   const handleLogoPress = () => {
     pressCount++;
@@ -55,14 +55,6 @@ export const MainTabs: React.FC = () => {
             <Text style={styles.logoTextAccent}>Tap</Text>
           </TouchableOpacity>
         ),
-        headerRight: () => (
-          <TouchableOpacity
-            onPress={() => navigation.navigate('AdminAuth')}
-            style={styles.adminButton}
-          >
-            <LockKeyhole size={17} color={theme.colors.textMuted} />
-          </TouchableOpacity>
-        ),
       }}
     >
       <Tab.Screen
@@ -70,7 +62,7 @@ export const MainTabs: React.FC = () => {
         component={JobFeedScreen}
         options={{
           headerShown: false,
-          tabBarIcon: ({ color, size }) => <BriefcaseBusiness size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => <Ionicons name="briefcase" size={size} color={color} />,
         }}
       />
       <Tab.Screen
@@ -78,7 +70,9 @@ export const MainTabs: React.FC = () => {
         component={SavedJobsScreen}
         options={{
           headerShown: false,
-          tabBarIcon: ({ color, size }) => <Star size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="star-outline" size={size} color={color} />
+          ),
         }}
       />
       <Tab.Screen
@@ -86,7 +80,7 @@ export const MainTabs: React.FC = () => {
         component={ProfileTab}
         options={{
           headerShown: false,
-          tabBarIcon: ({ color, size }) => <User size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => <Ionicons name="person" size={size} color={color} />,
         }}
       />
     </Tab.Navigator>
@@ -125,9 +119,5 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '900',
     color: theme.colors.primary,
-  },
-  adminButton: {
-    paddingRight: theme.spacing.md,
-    padding: 8,
   },
 });

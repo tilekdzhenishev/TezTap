@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Animated, TouchableOpacity } from 'react-native';
-import { Check, Mail } from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -41,9 +41,9 @@ export const EmailVerificationScreen: React.FC = () => {
         <Animated.View
           style={[styles.iconWrap, { transform: [{ scale: scaleAnim }], opacity: opacityAnim }]}
         >
-          <Mail size={42} color="#FF8C00" />
+          <Ionicons name="mail" size={42} color="#FF8C00" />
           <View style={styles.checkBadge}>
-            <Check size={14} color="#000000" />
+            <Ionicons name="checkmark" size={14} color="#000000" />
           </View>
         </Animated.View>
 
