@@ -30,8 +30,21 @@ yarn-error.*
 .DS_Store
 *.pem
 
-# local env files
-.env*.local
+# local env files and secrets
+.env
+.env.*
+!.env.example
+environment.env
+environment*.env
+
+# local agent / skill state
+.claude/
+.claude-flow/
+.swarm/
+skills/
+skills-lock.json
+ruvector.db
+claude-flow.config.json
 
 # typescript
 *.tsbuildinfo

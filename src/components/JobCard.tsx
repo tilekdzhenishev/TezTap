@@ -1,0 +1,264 @@
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  Banknote,
+  BriefcaseBusiness,
+  Check,
+  Clock,
+  MapPin,
+  Phone,
+  Rocket,
+  ShieldCheck,
+  Star,
+  Timer,
+  X,
+} from 'lucide-react-native';
+import { Job } from '../types';
+import { theme } from '../utils/theme';
+
+interface JobCardProps {
+  job: Job;
+  isSaved?: boolean;
+  onSkip: () => void;
+  onSave: () => void;
+  onContact: () => void;
+  onApply?: () => void;
+  hasApplied?: boolean;
+}
+
+export const JobCard: React.FC<JobCardProps> = ({
+  job,
+  isSaved = false,
+  onSkip,
+  onSave,
+  onContact,
+  onApply,
+  hasApplied = false,
+}) => {
+  return (
+    <View style={styles.card}>
+      <View style={styles.header}>
+        <Text style={styles.title}>{job.title}</Text>
+        <TouchableOpacity
+          style={[styles.saveIconButton, isSaved && styles.savedIconButton]}
+          onPress={onSave}
+          accessibilityRole="button"
+          accessibilityLabel={isSaved ? 'Удалить из сохраненных' : 'Сохранить вакансию'}
+        >
+          <Star
+            size={18}
+            color={isSaved ? '#000000' : theme.colors.primary}
+            fill={isSaved ? '#000000' : 'transparent'}
+          />
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.details}>
+        <View style={styles.detailRow}>
+          <Banknote size={16} color={theme.colors.textSecondary} style={styles.detailIcon} />
+          <Text style={styles.detailText}>{job.payment}</Text>
+        </View>
+        <View style={styles.detailRow}>
+          <Timer size={16} color={theme.colors.textSecondary} style={styles.detailIcon} />
+          <Text style={styles.detailText}>{job.duration}</Text>
+        </View>
+        <View style={styles.detailRow}>
+          <Clock size={16} color={theme.colors.textSecondary} style={styles.detailIcon} />
+          <Text style={styles.detailText}>{job.schedule}</Text>
+        </View>
+        <View style={styles.detailRow}>
+          <MapPin size={16} color={theme.colors.textSecondary} style={styles.detailIcon} />
+          <Text style={styles.detailText}>{job.location}</Text>
+        </View>
+      </View>
+
+      <Text style={styles.description}>{job.description}</Text>
+
+      {job.experience && (
+        <Text style={styles.experience}>{job.experience}</Text>
+      )}
+
+      <View style={styles.divider} />
+
+      {job.company_name && (
+        <View style={styles.companyBlock}>
+          <View style={styles.inlineRow}>
+            <ShieldCheck size={15} color={theme.colors.success} style={styles.inlineIcon} />
+            <Text style={styles.verifiedBadge}>Проверенный работодатель</Text>
+          </View>
+          <View style={styles.inlineRow}>
+            <BriefcaseBusiness size={16} color={theme.colors.text} style={styles.inlineIcon} />
+            <Text style={styles.companyName}>{job.company_name}</Text>
+          </View>
+        </View>
+      )}
+
+      {onApply && (
+        <TouchableOpacity
+          style={[styles.actionButton, styles.applyButton, hasApplied && styles.applyButtonDone]}
+          onPress={onApply}
+          disabled={hasApplied}
+        >
+          {hasApplied ? (
+            <Check size={18} color={theme.colors.success} style={styles.buttonIcon} />
+          ) : (
+            <Rocket size={18} color="#000000" style={styles.buttonIcon} />
+          )}
+          <Text style={[styles.applyButtonText, hasApplied && styles.applyButtonTextDone]}>
+            {hasApplied ? 'Заявка отправлена' : 'Выйти на смену'}
+          </Text>
+        </TouchableOpacity>
+      )}
+
+      <View style={styles.actions}>
+        <TouchableOpacity style={[styles.actionButton, styles.skipButton]} onPress={onSkip}>
+          <X size={18} color={theme.colors.textSecondary} style={styles.buttonIcon} />
+          <Text style={styles.skipButtonText}>Пропустить</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={[styles.actionButton, styles.contactButton]} onPress={onContact}>
+          <Phone size={18} color="#000000" style={styles.buttonIcon} />
+          <Text style={styles.contactButtonText}>Связаться</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  card: {
+    backgroundColor: theme.colors.card,
+    borderRadius: theme.borderRadius.lg,
+    padding: theme.spacing.lg,
+    marginHorizontal: theme.spacing.md,
+    borderWidth: 1,
+    borderColor: theme.colors.cardBorder,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    gap: theme.spacing.md,
+    marginBottom: theme.spacing.md,
+  },
+  title: {
+    flex: 1,
+    fontSize: 24,
+    fontWeight: '800',
+    color: theme.colors.text,
+    letterSpacing: -0.5,
+  },
+  saveIconButton: {
+    width: 40,
+    height: 40,
+    borderRadius: theme.borderRadius.full,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.colors.surface,
+    borderWidth: 1,
+    borderColor: theme.colors.cardBorder,
+  },
+  savedIconButton: {
+    backgroundColor: theme.colors.primary,
+    borderColor: theme.colors.primary,
+  },
+  details: {
+    marginBottom: theme.spacing.md,
+  },
+  detailRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: theme.spacing.xs,
+  },
+  detailIcon: {
+    marginRight: theme.spacing.sm,
+  },
+  detailText: {
+    fontSize: 16,
+    color: theme.colors.textSecondary,
+    fontWeight: '500',
+  },
+  description: {
+    fontSize: 16,
+    color: theme.colors.text,
+    lineHeight: 24,
+    marginBottom: theme.spacing.sm,
+  },
+  experience: {
+    fontSize: 14,
+    color: theme.colors.primaryLight,
+    fontWeight: '600',
+    marginBottom: theme.spacing.md,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: theme.colors.cardBorder,
+    marginVertical: theme.spacing.md,
+  },
+  companyBlock: {
+    marginBottom: theme.spacing.lg,
+  },
+  inlineRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: theme.spacing.xs,
+  },
+  inlineIcon: {
+    marginRight: theme.spacing.xs,
+  },
+  verifiedBadge: {
+    fontSize: 14,
+    color: theme.colors.success,
+    fontWeight: '600',
+    marginBottom: theme.spacing.xs,
+  },
+  companyName: {
+    fontSize: 16,
+    color: theme.colors.text,
+    fontWeight: '600',
+  },
+  applyButton: {
+    backgroundColor: theme.colors.primary,
+    marginBottom: theme.spacing.sm,
+  },
+  applyButtonDone: {
+    backgroundColor: theme.colors.success + '20',
+    borderWidth: 1,
+    borderColor: theme.colors.success + '40',
+  },
+  applyButtonText: { fontSize: 16, fontWeight: '800', color: '#000' },
+  applyButtonTextDone: { color: theme.colors.success },
+  actions: {
+    flexDirection: 'row',
+    gap: theme.spacing.sm,
+  },
+  actionButton: {
+    flex: 1,
+    flexDirection: 'row',
+    paddingVertical: 16,
+    borderRadius: theme.borderRadius.md,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonIcon: {
+    marginRight: theme.spacing.xs,
+  },
+  skipButton: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: theme.colors.cardBorder,
+  },
+  skipButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: theme.colors.textSecondary,
+  },
+  contactButton: {
+    backgroundColor: theme.colors.primary,
+  },
+  contactButtonText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#000000',
+  },
+});
