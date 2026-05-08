@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   View,
   Text,
@@ -153,7 +153,11 @@ export const EmployerPortalScreen: React.FC = () => {
           <View style={styles.infoCard}>
             <Text style={styles.infoTitle}>Как это работает</Text>
             {[
-              { Icon: ClipboardList, title: 'Опишите смену', sub: 'Укажите задачу, оплату и время' },
+              {
+                Icon: ClipboardList,
+                title: 'Опишите смену',
+                sub: 'Укажите задачу, оплату и время',
+              },
               { Icon: Check, title: 'Модерация', sub: 'Мы проверим объявление за 1–2 часа' },
               { Icon: Users, title: 'Получите отклики', sub: 'Соискатели напишут напрямую вам' },
             ].map(({ Icon, title, sub }) => (
@@ -181,17 +185,31 @@ export const EmployerPortalScreen: React.FC = () => {
                   }
                 >
                   <View style={styles.jobRowLeft}>
-                    <Text style={styles.jobRowTitle} numberOfLines={1}>{job.title}</Text>
+                    <Text style={styles.jobRowTitle} numberOfLines={1}>
+                      {job.title}
+                    </Text>
                     <View style={styles.jobStatusRow}>
                       {job.status === 'approved' ? (
-                        <Check size={13} color={theme.colors.success} style={styles.statusSmallIcon} />
+                        <Check
+                          size={13}
+                          color={theme.colors.success}
+                          style={styles.statusSmallIcon}
+                        />
                       ) : job.status === 'pending' ? (
-                        <Hourglass size={13} color={theme.colors.admin} style={styles.statusSmallIcon} />
+                        <Hourglass
+                          size={13}
+                          color={theme.colors.admin}
+                          style={styles.statusSmallIcon}
+                        />
                       ) : (
                         <X size={13} color={theme.colors.danger} style={styles.statusSmallIcon} />
                       )}
                       <Text style={styles.jobRowStatus}>
-                        {job.status === 'approved' ? 'Активна' : job.status === 'pending' ? 'На проверке' : 'Отклонена'}
+                        {job.status === 'approved'
+                          ? 'Активна'
+                          : job.status === 'pending'
+                            ? 'На проверке'
+                            : 'Отклонена'}
                       </Text>
                     </View>
                   </View>
@@ -225,9 +243,7 @@ export const EmployerPortalScreen: React.FC = () => {
               <Text style={styles.notesText}>{employer.review_notes}</Text>
             </View>
           ) : null}
-          <Text style={styles.statusDesc}>
-            Свяжитесь с поддержкой для уточнения деталей.
-          </Text>
+          <Text style={styles.statusDesc}>Свяжитесь с поддержкой для уточнения деталей.</Text>
           <TouchableOpacity style={styles.signOutBtn} onPress={signOut}>
             <Text style={styles.signOutText}>Выйти</Text>
           </TouchableOpacity>
@@ -242,9 +258,7 @@ export const EmployerPortalScreen: React.FC = () => {
         <Ban size={52} color={theme.colors.danger} />
         <Text style={styles.statusTitle}>Аккаунт приостановлен</Text>
         <Text style={styles.statusName}>{employer?.business_name}</Text>
-        <Text style={styles.statusDesc}>
-          Свяжитесь с поддержкой для восстановления доступа.
-        </Text>
+        <Text style={styles.statusDesc}>Свяжитесь с поддержкой для восстановления доступа.</Text>
         <TouchableOpacity style={styles.signOutBtn} onPress={signOut}>
           <Text style={styles.signOutText}>Выйти</Text>
         </TouchableOpacity>
@@ -264,7 +278,12 @@ const styles = StyleSheet.create({
   },
   statusTitle: { fontSize: 24, fontWeight: '800', color: theme.colors.text, textAlign: 'center' },
   statusName: { fontSize: 17, fontWeight: '700', color: theme.colors.primary, textAlign: 'center' },
-  statusDesc: { fontSize: 15, color: theme.colors.textSecondary, textAlign: 'center', lineHeight: 22 },
+  statusDesc: {
+    fontSize: 15,
+    color: theme.colors.textSecondary,
+    textAlign: 'center',
+    lineHeight: 22,
+  },
   refreshBtn: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -304,7 +323,12 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   badgeIcon: { marginRight: theme.spacing.xs },
-  verifiedBadgeText: { fontSize: 11, fontWeight: '800', color: theme.colors.success, letterSpacing: 1 },
+  verifiedBadgeText: {
+    fontSize: 11,
+    fontWeight: '800',
+    color: theme.colors.success,
+    letterSpacing: 1,
+  },
   companyName: { fontSize: 26, fontWeight: '800', color: theme.colors.text },
   companyType: { fontSize: 14, color: theme.colors.textSecondary, fontWeight: '500' },
   postButton: {

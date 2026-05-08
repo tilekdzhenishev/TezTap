@@ -99,9 +99,7 @@ export const UserLoginScreen: React.FC = () => {
             <ArrowLeft size={24} color="#FFFFFF" />
           </TouchableOpacity>
 
-          <Animated.View
-            style={{ opacity: fadeAnim, transform: [{ translateY: slideAnim }] }}
-          >
+          <Animated.View style={{ opacity: fadeAnim, transform: [{ translateY: slideAnim }] }}>
             <View style={styles.header}>
               <Text style={styles.title}>С возвращением</Text>
               <Text style={styles.subtitle}>Войдите в свой аккаунт</Text>
@@ -111,7 +109,10 @@ export const UserLoginScreen: React.FC = () => {
               <AuthInput
                 label="Email"
                 value={email}
-                onChangeText={(t) => { setEmail(t); setEmailError(''); }}
+                onChangeText={(t) => {
+                  setEmail(t);
+                  setEmailError('');
+                }}
                 keyboardType="email-address"
                 placeholder="you@example.com"
                 error={emailError}
@@ -121,7 +122,10 @@ export const UserLoginScreen: React.FC = () => {
               <AuthInput
                 label="Пароль"
                 value={password}
-                onChangeText={(t) => { setPassword(t); setPasswordError(''); }}
+                onChangeText={(t) => {
+                  setPassword(t);
+                  setPasswordError('');
+                }}
                 secureTextEntry
                 placeholder="••••••••"
                 autoComplete="current-password"
@@ -139,11 +143,7 @@ export const UserLoginScreen: React.FC = () => {
               </TouchableOpacity>
 
               <View style={styles.submitSpacer} />
-              <AuthButton
-                title="Войти"
-                onPress={handleLogin}
-                loading={loading}
-              />
+              <AuthButton title="Войти" onPress={handleLogin} loading={loading} />
             </View>
 
             <View style={styles.footer}>

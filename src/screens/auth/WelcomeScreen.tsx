@@ -1,11 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Animated,
-  Dimensions,
-} from 'react-native';
+import { View, Text, StyleSheet, Animated, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -46,7 +40,6 @@ export const WelcomeScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-
         <View style={styles.logoSection}>
           <Animated.View style={{ opacity: logoOpacity, transform: [{ scale: logoScale }] }}>
             <View style={styles.logoRow}>
@@ -100,7 +93,6 @@ export const WelcomeScreen: React.FC = () => {
             </Text>
           </View>
         </Animated.View>
-
       </View>
 
       <View style={styles.decorLeft} />

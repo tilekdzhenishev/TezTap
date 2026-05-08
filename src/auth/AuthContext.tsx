@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { Session, User } from '@supabase/supabase-js';
-import { supabase } from '../supabase/client';
-import { fetchProfile, fetchWorkerProfile } from '../supabase/client';
+import { fetchProfile, fetchWorkerProfile, supabase } from '../supabase/client';
 import { Profile, WorkerProfile } from '../types';
 import {
   authSignIn,
@@ -59,10 +58,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             business_name: businessName,
             business_type:
               typeof metadata.business_type === 'string' ? metadata.business_type : 'Другое',
-            contact_phone:
-              typeof metadata.contact_phone === 'string' ? metadata.contact_phone : '',
-            description:
-              typeof metadata.description === 'string' ? metadata.description : null,
+            contact_phone: typeof metadata.contact_phone === 'string' ? metadata.contact_phone : '',
+            description: typeof metadata.description === 'string' ? metadata.description : null,
             verification_status: 'pending',
           });
         }

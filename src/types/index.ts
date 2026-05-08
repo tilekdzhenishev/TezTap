@@ -112,16 +112,6 @@ export interface JobApplication {
   job?: Job;
 }
 
-export const DURATION_OPTIONS = [
-  'Сегодня',
-  '1–3 дня',
-  '3–7 дней',
-  '1–2 недели',
-  'Другое',
-] as const;
+export const DURATION_OPTIONS = ['Сегодня', '1–3 дня', '3–7 дней', '1–2 недели', 'Другое'] as const;
 
-export const EXPERIENCE_OPTIONS = [
-  'Можно без опыта',
-  'Опыт желателен',
-  'Опыт обязателен',
-] as const;
+export const EXPERIENCE_OPTIONS = ['Можно без опыта', 'Опыт желателен', 'Опыт обязателен'] as const;

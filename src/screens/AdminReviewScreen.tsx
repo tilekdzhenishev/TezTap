@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ActivityIndicator, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  ActivityIndicator,
+  TouchableOpacity,
+} from 'react-native';
 import { BriefcaseBusiness, Check, HardHat, LockKeyhole, RefreshCw, X } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -100,9 +107,7 @@ export const AdminReviewScreen: React.FC = () => {
           <LockKeyhole size={19} color={theme.colors.admin} style={styles.headerIcon} />
           <Text style={styles.headerTitle}>Вакансии</Text>
         </View>
-        <Text style={styles.headerCounter}>
-          {pendingJobs.length - currentIndex} ожидает
-        </Text>
+        <Text style={styles.headerCounter}>{pendingJobs.length - currentIndex} ожидает</Text>
         <TouchableOpacity
           style={styles.employersButton}
           onPress={() => navigation.navigate('AdminEmployerReview')}
@@ -131,11 +136,7 @@ export const AdminReviewScreen: React.FC = () => {
       )}
 
       <View style={styles.cardContainer}>
-        <AdminJobCard
-          job={currentJob}
-          onApprove={handleApprove}
-          onReject={handleReject}
-        />
+        <AdminJobCard job={currentJob} onApprove={handleApprove} onReject={handleReject} />
       </View>
     </SafeAreaView>
   );

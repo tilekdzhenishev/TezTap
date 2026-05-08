@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TextInput, TouchableOpacity, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import { ArrowLeft, LockKeyhole } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -52,10 +60,7 @@ export const AdminAuthScreen: React.FC = () => {
           <Text style={styles.buttonText}>Войти</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <ArrowLeft size={17} color={theme.colors.textSecondary} style={styles.buttonIcon} />
           <Text style={styles.backButtonText}>Назад</Text>
         </TouchableOpacity>

@@ -48,31 +48,31 @@ Phone authentication requires an SMS provider in Supabase Auth settings. Email a
 
 ### `jobs`
 
-| Column | Type | Description |
-| --- | --- | --- |
-| id | uuid | Primary key |
-| title | text | Job title |
-| description | text | Job description |
-| payment | text | Payment details |
-| duration | text | Job duration |
-| schedule | text | Work schedule |
-| location | text | Job location |
-| experience | text | Experience requirement |
-| company_name | text | Company name |
-| contact_url | text | Telegram URL, username, or phone |
-| status | text | pending / approved / rejected |
-| is_active | boolean | Whether the job is visible in the feed |
-| created_at | timestamptz | Creation timestamp |
-| closed_at | timestamptz | Close timestamp |
+| Column       | Type        | Description                            |
+| ------------ | ----------- | -------------------------------------- |
+| id           | uuid        | Primary key                            |
+| title        | text        | Job title                              |
+| description  | text        | Job description                        |
+| payment      | text        | Payment details                        |
+| duration     | text        | Job duration                           |
+| schedule     | text        | Work schedule                          |
+| location     | text        | Job location                           |
+| experience   | text        | Experience requirement                 |
+| company_name | text        | Company name                           |
+| contact_url  | text        | Telegram URL, username, or phone       |
+| status       | text        | pending / approved / rejected          |
+| is_active    | boolean     | Whether the job is visible in the feed |
+| created_at   | timestamptz | Creation timestamp                     |
+| closed_at    | timestamptz | Close timestamp                        |
 
 ### `saved_jobs`
 
-| Column | Type | Description |
-| --- | --- | --- |
-| id | uuid | Primary key |
-| job_id | uuid | Reference to `jobs` |
-| device_id | text | Device identifier |
-| created_at | timestamptz | Save timestamp |
+| Column     | Type        | Description         |
+| ---------- | ----------- | ------------------- |
+| id         | uuid        | Primary key         |
+| job_id     | uuid        | Reference to `jobs` |
+| device_id  | text        | Device identifier   |
+| created_at | timestamptz | Save timestamp      |
 
 The schema also includes user profiles, employer profiles, worker profiles, job applications, verification flows, and storage policies for worker documents.
 
@@ -95,6 +95,38 @@ For native rebuilds:
 ```bash
 npm run ios
 npm run android
+```
+
+## Code Quality
+
+The project uses TypeScript, ESLint, Prettier, Husky, lint-staged, commitlint, and GitHub Actions.
+
+Run the full local validation before opening a pull request:
+
+```bash
+npm run validate
+```
+
+Individual checks:
+
+```bash
+npm run typecheck
+npm run lint
+npm run format:check
+npm run audit
+```
+
+Local Git hooks run automatically:
+
+- `pre-commit`: runs lint-staged on changed files.
+- `commit-msg`: validates Conventional Commit messages.
+
+Commit messages should follow this style:
+
+```text
+feat: add worker onboarding validation
+fix: handle Supabase auth rate limit
+chore: update project tooling
 ```
 
 ## Employer Flow

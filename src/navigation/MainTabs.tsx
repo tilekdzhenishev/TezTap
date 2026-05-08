@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BriefcaseBusiness, LockKeyhole, User, Star } from 'lucide-react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';

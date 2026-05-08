@@ -83,7 +83,10 @@ export const ForgotPasswordScreen: React.FC = () => {
                 <AuthInput
                   label="Email"
                   value={email}
-                  onChangeText={(t) => { setEmail(t); setEmailError(''); }}
+                  onChangeText={(t) => {
+                    setEmail(t);
+                    setEmailError('');
+                  }}
                   placeholder="you@example.com"
                   keyboardType="email-address"
                   error={emailError}
@@ -102,9 +105,7 @@ export const ForgotPasswordScreen: React.FC = () => {
                 Мы отправили ссылку для сброса пароля на{'\n'}
                 <Text style={styles.emailHighlight}>{email}</Text>
               </Text>
-              <Text style={styles.hintText}>
-                Проверьте папку «Спам», если письмо не пришло.
-              </Text>
+              <Text style={styles.hintText}>Проверьте папку «Спам», если письмо не пришло.</Text>
               <View style={styles.spacer} />
               <AuthButton
                 title="Вернуться к входу"
@@ -130,7 +131,13 @@ const styles = StyleSheet.create({
     paddingTop: 40,
   },
   icon: { fontSize: 48, marginBottom: 20 },
-  title: { fontSize: 30, fontWeight: '800', color: '#FFFFFF', letterSpacing: -0.5, marginBottom: 12 },
+  title: {
+    fontSize: 30,
+    fontWeight: '800',
+    color: '#FFFFFF',
+    letterSpacing: -0.5,
+    marginBottom: 12,
+  },
   subtitle: { fontSize: 16, color: '#666666', lineHeight: 24, marginBottom: 32 },
   emailHighlight: { color: '#FF8C00', fontWeight: '600' },
   hintText: { fontSize: 14, color: '#444444', lineHeight: 20 },

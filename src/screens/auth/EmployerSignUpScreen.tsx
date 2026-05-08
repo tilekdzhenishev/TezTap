@@ -49,7 +49,11 @@ export const EmployerSignUpScreen: React.FC = () => {
   }, []);
 
   const clearError = (field: string) =>
-    setErrors((p) => { const n = { ...p }; delete n[field]; return n; });
+    setErrors((p) => {
+      const n = { ...p };
+      delete n[field];
+      return n;
+    });
 
   const validate = () => {
     const e: Record<string, string> = {};
@@ -111,16 +115,17 @@ export const EmployerSignUpScreen: React.FC = () => {
 
             <View style={styles.header}>
               <Text style={styles.title}>Регистрация компании</Text>
-              <Text style={styles.subtitle}>
-                После регистрации вы пройдёте ручную проверку
-              </Text>
+              <Text style={styles.subtitle}>После регистрации вы пройдёте ручную проверку</Text>
             </View>
 
             <View style={styles.form}>
               <AuthInput
                 label="Название компании *"
                 value={companyName}
-                onChangeText={(t) => { setCompanyName(t); clearError('companyName'); }}
+                onChangeText={(t) => {
+                  setCompanyName(t);
+                  clearError('companyName');
+                }}
                 placeholder="Globus, Café Central..."
                 autoCapitalize="words"
                 error={errors.companyName}
@@ -129,7 +134,10 @@ export const EmployerSignUpScreen: React.FC = () => {
               <AuthInput
                 label="Рабочий Email *"
                 value={email}
-                onChangeText={(t) => { setEmail(t); clearError('email'); }}
+                onChangeText={(t) => {
+                  setEmail(t);
+                  clearError('email');
+                }}
                 placeholder="company@example.com"
                 keyboardType="email-address"
                 error={errors.email}
@@ -138,7 +146,10 @@ export const EmployerSignUpScreen: React.FC = () => {
               <AuthInput
                 label="Контактный телефон *"
                 value={phone}
-                onChangeText={(t) => { setPhone(t); clearError('phone'); }}
+                onChangeText={(t) => {
+                  setPhone(t);
+                  clearError('phone');
+                }}
                 placeholder="+996 XXX XXX XXX"
                 keyboardType="phone-pad"
                 error={errors.phone}
@@ -146,15 +157,16 @@ export const EmployerSignUpScreen: React.FC = () => {
               <View style={styles.spacer} />
 
               <Text style={styles.sectionLabel}>ТИП БИЗНЕСА *</Text>
-              {errors.industry ? (
-                <Text style={styles.errorText}>{errors.industry}</Text>
-              ) : null}
+              {errors.industry ? <Text style={styles.errorText}>{errors.industry}</Text> : null}
               <View style={styles.industryGrid}>
                 {BUSINESS_TYPE_OPTIONS.map((opt) => (
                   <TouchableOpacity
                     key={opt}
                     style={[styles.chip, industry === opt && styles.chipSelected]}
-                    onPress={() => { setIndustry(opt); clearError('industry'); }}
+                    onPress={() => {
+                      setIndustry(opt);
+                      clearError('industry');
+                    }}
                   >
                     <Text style={[styles.chipText, industry === opt && styles.chipTextSelected]}>
                       {opt}
@@ -176,7 +188,10 @@ export const EmployerSignUpScreen: React.FC = () => {
               <AuthInput
                 label="Пароль *"
                 value={password}
-                onChangeText={(t) => { setPassword(t); clearError('password'); }}
+                onChangeText={(t) => {
+                  setPassword(t);
+                  clearError('password');
+                }}
                 secureTextEntry
                 placeholder="Минимум 8 символов"
                 autoComplete="one-time-code"
@@ -188,7 +203,10 @@ export const EmployerSignUpScreen: React.FC = () => {
               <AuthInput
                 label="Повторите пароль *"
                 value={confirmPassword}
-                onChangeText={(t) => { setConfirmPassword(t); clearError('confirmPassword'); }}
+                onChangeText={(t) => {
+                  setConfirmPassword(t);
+                  clearError('confirmPassword');
+                }}
                 secureTextEntry
                 placeholder="••••••••"
                 autoComplete="one-time-code"
@@ -239,7 +257,13 @@ const styles = StyleSheet.create({
   },
   badgeText: { fontSize: 11, fontWeight: '800', color: '#FF8C00', letterSpacing: 1.5 },
   header: { marginBottom: 32 },
-  title: { fontSize: 30, fontWeight: '800', color: '#FFFFFF', letterSpacing: -0.5, marginBottom: 8 },
+  title: {
+    fontSize: 30,
+    fontWeight: '800',
+    color: '#FFFFFF',
+    letterSpacing: -0.5,
+    marginBottom: 8,
+  },
   subtitle: { fontSize: 15, color: '#666666', lineHeight: 22 },
   form: { gap: 0 },
   spacer: { height: 16 },

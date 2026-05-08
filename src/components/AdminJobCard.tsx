@@ -29,7 +29,7 @@ export const AdminJobCard: React.FC<AdminJobCardProps> = ({ job, onApprove, onRe
   };
 
   return (
-      <View style={styles.card}>
+    <View style={styles.card}>
       <View style={styles.statusBadge}>
         <Hourglass size={14} color={theme.colors.admin} style={styles.badgeIcon} />
         <Text style={styles.statusText}>Ожидает проверки</Text>
@@ -58,9 +58,7 @@ export const AdminJobCard: React.FC<AdminJobCardProps> = ({ job, onApprove, onRe
 
       <Text style={styles.description}>{job.description}</Text>
 
-      {job.experience && (
-        <Text style={styles.experience}>{job.experience}</Text>
-      )}
+      {job.experience && <Text style={styles.experience}>{job.experience}</Text>}
 
       {job.company_name && (
         <View style={styles.inlineRow}>
@@ -80,7 +78,10 @@ export const AdminJobCard: React.FC<AdminJobCardProps> = ({ job, onApprove, onRe
           <Text style={styles.rejectButtonText}>Отклонить</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.actionButton, styles.contactPreviewButton]} onPress={handleContact}>
+        <TouchableOpacity
+          style={[styles.actionButton, styles.contactPreviewButton]}
+          onPress={handleContact}
+        >
           <Phone size={18} color={theme.colors.textSecondary} style={styles.buttonIcon} />
           <Text style={styles.contactPreviewButtonText}>Проверить контакт</Text>
         </TouchableOpacity>

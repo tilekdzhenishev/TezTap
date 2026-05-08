@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ActivityIndicator, TouchableOpacity, Alert } from 'react-native';
-import { Linking } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  ActivityIndicator,
+  TouchableOpacity,
+  Alert,
+  Linking,
+} from 'react-native';
 import { LockKeyhole, RefreshCw } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -13,7 +21,16 @@ import { theme } from '../utils/theme';
 
 export const JobFeedScreen: React.FC = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  const { activeJobs, currentJobIndex, loading, skipJob, saveJob, isJobSaved, loadActiveJobs, init } = useStore();
+  const {
+    activeJobs,
+    currentJobIndex,
+    loading,
+    skipJob,
+    saveJob,
+    isJobSaved,
+    loadActiveJobs,
+    init,
+  } = useStore();
   const { user, profile, workerProfile } = useAuth();
   const [saved, setSaved] = useState(false);
   const [checkingSaved, setCheckingSaved] = useState(false);
@@ -37,7 +54,7 @@ export const JobFeedScreen: React.FC = () => {
     setSaved(false);
     setCheckingSaved(true);
     if (activeJobs.length > 0 && currentJobIndex < activeJobs.length) {
-      isJobSaved(activeJobs[currentJobIndex].id).then(s => {
+      isJobSaved(activeJobs[currentJobIndex].id).then((s) => {
         setSaved(s);
         setCheckingSaved(false);
       });
@@ -61,7 +78,9 @@ export const JobFeedScreen: React.FC = () => {
     if (!user || currentJobIndex >= activeJobs.length) return;
 
     if (!workerProfile) {
-      navigation.getParent<NativeStackNavigationProp<RootStackParamList>>()?.navigate('WorkerOnboarding');
+      navigation
+        .getParent<NativeStackNavigationProp<RootStackParamList>>()
+        ?.navigate('WorkerOnboarding');
       return;
     }
 
@@ -69,10 +88,7 @@ export const JobFeedScreen: React.FC = () => {
       Alert.alert('Аккаунт заблокирован', 'Вы не можете откликаться на вакансии.');
       return;
     }
-    if (
-      workerProfile.suspended_until &&
-      new Date(workerProfile.suspended_until) > new Date()
-    ) {
+    if (workerProfile.suspended_until && new Date(workerProfile.suspended_until) > new Date()) {
       const date = new Date(workerProfile.suspended_until).toLocaleDateString('ru-RU');
       Alert.alert('Аккаунт приостановлен', `Доступ восстановится ${date}.`);
       return;
@@ -112,7 +128,11 @@ export const JobFeedScreen: React.FC = () => {
           <Text style={styles.headerTitle}>TezTap</Text>
           <View style={styles.headerRight} />
           <TouchableOpacity
-            onPress={() => navigation.getParent<NativeStackNavigationProp<RootStackParamList>>()?.navigate('AdminAuth')}
+            onPress={() =>
+              navigation
+                .getParent<NativeStackNavigationProp<RootStackParamList>>()
+                ?.navigate('AdminAuth')
+            }
             style={styles.adminButton}
           >
             <LockKeyhole size={18} color={theme.colors.textMuted} />
@@ -141,7 +161,11 @@ export const JobFeedScreen: React.FC = () => {
           {currentJobIndex + 1} / {activeJobs.length}
         </Text>
         <TouchableOpacity
-          onPress={() => navigation.getParent<NativeStackNavigationProp<RootStackParamList>>()?.navigate('AdminAuth')}
+          onPress={() =>
+            navigation
+              .getParent<NativeStackNavigationProp<RootStackParamList>>()
+              ?.navigate('AdminAuth')
+          }
           style={styles.adminButton}
         >
           <LockKeyhole size={18} color={theme.colors.textMuted} />

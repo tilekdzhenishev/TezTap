@@ -74,7 +74,12 @@ export const UserSignUpScreen: React.FC = () => {
 
   const setField = (field: string, value: string, setter: (v: string) => void) => {
     setter(value);
-    if (errors[field]) setErrors((prev) => { const n = { ...prev }; delete n[field]; return n; });
+    if (errors[field])
+      setErrors((prev) => {
+        const n = { ...prev };
+        delete n[field];
+        return n;
+      });
   };
 
   return (
@@ -170,7 +175,13 @@ const styles = StyleSheet.create({
   backBtn: { marginTop: 8, marginBottom: 32, alignSelf: 'flex-start', padding: 4 },
   backBtnText: { fontSize: 26, color: '#FFFFFF', fontWeight: '300' },
   header: { marginBottom: 36 },
-  title: { fontSize: 32, fontWeight: '800', color: '#FFFFFF', letterSpacing: -0.5, marginBottom: 8 },
+  title: {
+    fontSize: 32,
+    fontWeight: '800',
+    color: '#FFFFFF',
+    letterSpacing: -0.5,
+    marginBottom: 8,
+  },
   subtitle: { fontSize: 16, color: '#666666' },
   form: { gap: 0 },
   spacer: { height: 16 },

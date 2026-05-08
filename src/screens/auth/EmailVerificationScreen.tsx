@@ -1,11 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Animated,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, StyleSheet, Animated, TouchableOpacity } from 'react-native';
 import { Check, Mail } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
@@ -53,17 +47,12 @@ export const EmailVerificationScreen: React.FC = () => {
           </View>
         </Animated.View>
 
-        <Animated.View
-          style={{ opacity: contentAnim, transform: [{ translateY: contentY }] }}
-        >
+        <Animated.View style={{ opacity: contentAnim, transform: [{ translateY: contentY }] }}>
           <Text style={styles.title}>Проверьте почту</Text>
-          <Text style={styles.subtitle}>
-            Мы отправили письмо с подтверждением на
-          </Text>
+          <Text style={styles.subtitle}>Мы отправили письмо с подтверждением на</Text>
           <Text style={styles.email}>{email}</Text>
           <Text style={styles.instruction}>
-            Нажмите на ссылку в письме, чтобы активировать аккаунт.
-            После этого вернитесь и войдите.
+            Нажмите на ссылку в письме, чтобы активировать аккаунт. После этого вернитесь и войдите.
           </Text>
 
           <View style={styles.steps}>
@@ -86,10 +75,7 @@ export const EmailVerificationScreen: React.FC = () => {
               variant="primary"
             />
             <View style={styles.spacer} />
-            <TouchableOpacity
-              style={styles.resendBtn}
-              onPress={() => resetPassword(email)}
-            >
+            <TouchableOpacity style={styles.resendBtn} onPress={() => resetPassword(email)}>
               <Text style={styles.resendText}>Отправить письмо снова</Text>
             </TouchableOpacity>
           </View>

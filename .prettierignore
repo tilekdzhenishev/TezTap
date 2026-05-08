@@ -1,0 +1,15 @@
+node_modules
+.expo
+dist
+web-build
+ios
+android
+coverage
+.claude
+.claude-flow
+.swarm
+environment.env
+.env
+.env.*
+package-lock.json
+ruvector.db

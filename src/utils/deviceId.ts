@@ -9,7 +9,7 @@ export async function getDeviceId(): Promise<string> {
   if (!deviceId) {
     const randomBytes = await Crypto.getRandomBytesAsync(16);
     deviceId = Array.from(randomBytes)
-      .map(b => b.toString(16).padStart(2, '0'))
+      .map((b) => b.toString(16).padStart(2, '0'))
       .join('');
     await SecureStore.setItemAsync(DEVICE_ID_KEY, deviceId);
   }

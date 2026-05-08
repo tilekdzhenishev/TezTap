@@ -18,7 +18,18 @@ import { useAuth } from '../../auth/AuthContext';
 import { createWorkerProfile, uploadWorkerDoc } from '../../supabase/client';
 import { RootStackParamList } from '../../types/navigation';
 import { theme } from '../../utils/theme';
-import { ArrowLeft, ArrowRight, BadgeCheck, Cake, Camera, CheckCircle, IdCard, Image as ImageIcon, Smartphone, User } from 'lucide-react-native';
+import {
+  ArrowLeft,
+  ArrowRight,
+  BadgeCheck,
+  Cake,
+  Camera,
+  CheckCircle,
+  IdCard,
+  Image as ImageIcon,
+  Smartphone,
+  User,
+} from 'lucide-react-native';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
 
@@ -112,10 +123,14 @@ export const WorkerOnboardingScreen: React.FC = () => {
 
   const canProceed = (): boolean => {
     switch (step) {
-      case 1: return fullName.trim().length >= 2 && fullName.trim().length <= 50;
-      case 2: return isValidPhone(phone);
-      case 3: return isValidBirthYear(birthYear);
-      default: return true;
+      case 1:
+        return fullName.trim().length >= 2 && fullName.trim().length <= 50;
+      case 2:
+        return isValidPhone(phone);
+      case 3:
+        return isValidBirthYear(birthYear);
+      default:
+        return true;
     }
   };
 
@@ -167,7 +182,9 @@ export const WorkerOnboardingScreen: React.FC = () => {
 
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.stepLabel}>Шаг {step} из {DATA_STEPS}</Text>
+          <Text style={styles.stepLabel}>
+            Шаг {step} из {DATA_STEPS}
+          </Text>
           <View style={styles.progressTrack}>
             <View style={[styles.progressFill, { width: `${progress}%` }]} />
           </View>
@@ -175,7 +192,6 @@ export const WorkerOnboardingScreen: React.FC = () => {
 
         {/* Step content */}
         <View style={styles.stepContent}>
-
           {/* Step 1 — Full name */}
           {step === 1 && (
             <>
@@ -227,7 +243,9 @@ export const WorkerOnboardingScreen: React.FC = () => {
             <>
               <Cake size={44} color={theme.colors.primary} style={styles.stepIconSvg} />
               <Text style={styles.stepTitle}>Введите год рождения</Text>
-              <Text style={styles.stepDesc}>Нужен для верификации. Минимальный возраст — 16 лет.</Text>
+              <Text style={styles.stepDesc}>
+                Нужен для верификации. Минимальный возраст — 16 лет.
+              </Text>
               <TextInput
                 style={styles.input}
                 value={birthYear}
@@ -260,11 +278,17 @@ export const WorkerOnboardingScreen: React.FC = () => {
                 </View>
               ) : (
                 <View style={styles.uploadRow}>
-                  <TouchableOpacity style={styles.uploadBtn} onPress={() => pickFromLibrary(setPassportUri)}>
+                  <TouchableOpacity
+                    style={styles.uploadBtn}
+                    onPress={() => pickFromLibrary(setPassportUri)}
+                  >
                     <ImageIcon size={28} color={theme.colors.textSecondary} />
                     <Text style={styles.uploadLabel}>Галерея</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.uploadBtn} onPress={() => pickFromCamera(setPassportUri)}>
+                  <TouchableOpacity
+                    style={styles.uploadBtn}
+                    onPress={() => pickFromCamera(setPassportUri)}
+                  >
                     <Camera size={28} color={theme.colors.textSecondary} />
                     <Text style={styles.uploadLabel}>Камера</Text>
                   </TouchableOpacity>
@@ -295,11 +319,17 @@ export const WorkerOnboardingScreen: React.FC = () => {
                 </View>
               ) : (
                 <View style={styles.uploadRow}>
-                  <TouchableOpacity style={styles.uploadBtn} onPress={() => pickFromCamera(setSelfieUri)}>
+                  <TouchableOpacity
+                    style={styles.uploadBtn}
+                    onPress={() => pickFromCamera(setSelfieUri)}
+                  >
                     <Camera size={28} color={theme.colors.textSecondary} />
                     <Text style={styles.uploadLabel}>Камера</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.uploadBtn} onPress={() => pickFromLibrary(setSelfieUri)}>
+                  <TouchableOpacity
+                    style={styles.uploadBtn}
+                    onPress={() => pickFromLibrary(setSelfieUri)}
+                  >
                     <ImageIcon size={28} color={theme.colors.textSecondary} />
                     <Text style={styles.uploadLabel}>Галерея</Text>
                   </TouchableOpacity>
@@ -310,7 +340,6 @@ export const WorkerOnboardingScreen: React.FC = () => {
               </TouchableOpacity>
             </>
           )}
-
         </View>
 
         {/* Next / Submit button */}

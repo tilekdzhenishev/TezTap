@@ -6,7 +6,15 @@
     "start": "DOTENV_CONFIG_PATH=environment.env node -r dotenv/config ./node_modules/expo/bin/cli start",
     "android": "DOTENV_CONFIG_PATH=environment.env node -r dotenv/config ./node_modules/expo/bin/cli run:android",
     "ios": "DOTENV_CONFIG_PATH=environment.env node -r dotenv/config ./node_modules/expo/bin/cli run:ios",
-    "web": "DOTENV_CONFIG_PATH=environment.env node -r dotenv/config ./node_modules/expo/bin/cli start --web"
+    "web": "DOTENV_CONFIG_PATH=environment.env node -r dotenv/config ./node_modules/expo/bin/cli start --web",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --max-warnings=0",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
+    "audit": "npm audit --audit-level=high",
+    "validate": "npm run typecheck && npm run lint && npm run format:check && npm run audit",
+    "prepare": "husky"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^7.15.11",
@@ -35,8 +43,24 @@
     "zustand": "^5.0.12"
   },
   "devDependencies": {
+    "@commitlint/cli": "^20.5.3",
+    "@commitlint/config-conventional": "^20.5.3",
     "@types/react": "~19.1.0",
+    "eslint": "^9.39.4",
+    "eslint-config-expo": "^55.0.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.8.3",
     "typescript": "~5.9.2"
   },
-  "private": true
+  "private": true,
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml,css}": [
+      "prettier --write"
+    ]
+  }
 }

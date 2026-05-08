@@ -2,7 +2,16 @@ import 'react-native-url-polyfill/auto';
 import { createClient } from '@supabase/supabase-js';
 import * as SecureStore from 'expo-secure-store';
 import { Platform } from 'react-native';
-import { Job, SavedJob, Employer, EmployerDraft, Profile, WorkerProfile, JobApplication, JobApplicationStatus } from '../types';
+import {
+  Job,
+  SavedJob,
+  Employer,
+  EmployerDraft,
+  Profile,
+  WorkerProfile,
+  JobApplication,
+  JobApplicationStatus,
+} from '../types';
 
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
@@ -84,11 +93,7 @@ export async function fetchPendingJobs(): Promise<Job[]> {
 }
 
 export async function submitJob(job: Omit<Job, 'id' | 'created_at'>): Promise<Job | null> {
-  const { data, error } = await supabase
-    .from('jobs')
-    .insert(job)
-    .select()
-    .single();
+  const { data, error } = await supabase.from('jobs').insert(job).select().single();
 
   if (error) {
     console.error('Error submitting job:', error);
@@ -152,10 +157,7 @@ export async function fetchSavedJobs(deviceId: string): Promise<SavedJob[]> {
 }
 
 export async function unsaveJob(savedJobId: string): Promise<boolean> {
-  const { error } = await supabase
-    .from('saved_jobs')
-    .delete()
-    .eq('id', savedJobId);
+  const { error } = await supabase.from('saved_jobs').delete().eq('id', savedJobId);
 
   if (error) {
     console.error('Error unsaving job:', error);
@@ -179,11 +181,7 @@ export async function isJobSaved(jobId: string, deviceId: string): Promise<boole
 // ── Profiles ─────────────────────────────────────────────────
 
 export async function fetchProfile(userId: string): Promise<Profile | null> {
-  const { data, error } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', userId)
-    .single();
+  const { data, error } = await supabase.from('profiles').select('*').eq('id', userId).single();
   if (error) return null;
   return data as Profile;
 }
@@ -221,11 +219,7 @@ export async function registerEmployer(draft: EmployerDraft): Promise<Employer |
 }
 
 export async function fetchEmployerById(id: string): Promise<Employer | null> {
-  const { data, error } = await supabase
-    .from('employers')
-    .select('*')
-    .eq('id', id)
-    .single();
+  const { data, error } = await supabase.from('employers').select('*').eq('id', id).single();
 
   if (error) return null;
   return data as Employer;
@@ -355,10 +349,7 @@ export async function updateWorkerProfileUrls(
   userId: string,
   updates: { passport_front_url?: string; selfie_url?: string }
 ): Promise<boolean> {
-  const { error } = await supabase
-    .from('worker_profiles')
-    .update(updates)
-    .eq('user_id', userId);
+  const { error } = await supabase.from('worker_profiles').update(updates).eq('user_id', userId);
 
   if (error) {
     console.error('Error updating worker profile:', error);
@@ -513,10 +504,7 @@ export async function updateApplicationStatus(
   return true;
 }
 
-export async function reportNoShow(
-  applicationId: string,
-  workerId: string
-): Promise<boolean> {
+export async function reportNoShow(applicationId: string, workerId: string): Promise<boolean> {
   const { error: appError } = await supabase
     .from('job_applications')
     .update({ status: 'no_show', no_show_reported: true, responded_at: new Date().toISOString() })
@@ -539,10 +527,7 @@ export async function reportNoShow(
     updates.suspended_until = until.toISOString();
   }
 
-  await supabase
-    .from('worker_profiles')
-    .update(updates)
-    .eq('user_id', workerId);
+  await supabase.from('worker_profiles').update(updates).eq('user_id', workerId);
 
   return true;
 }

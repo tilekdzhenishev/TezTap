@@ -8,12 +8,16 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
-  TextInput,
   Modal,
 } from 'react-native';
 import { useRoute, RouteProp, useNavigation, useFocusEffect } from '@react-navigation/native';
 import { RootStackParamList } from '../../types/navigation';
-import { fetchJobApplications, updateApplicationStatus, reportNoShow, rateWorker } from '../../supabase/client';
+import {
+  fetchJobApplications,
+  updateApplicationStatus,
+  reportNoShow,
+  rateWorker,
+} from '../../supabase/client';
 import { JobApplication } from '../../types';
 import { theme } from '../../utils/theme';
 import { ArrowLeft, Check, Star, Users, X } from 'lucide-react-native';
@@ -45,7 +49,11 @@ export const EmployerApplicationsScreen: React.FC = () => {
     setLoading(false);
   }, [jobId]);
 
-  useFocusEffect(useCallback(() => { load(); }, [load]));
+  useFocusEffect(
+    useCallback(() => {
+      load();
+    }, [load])
+  );
 
   const handleAccept = async (app: JobApplication) => {
     const ok = await updateApplicationStatus(app.id, 'accepted');
@@ -67,21 +75,17 @@ export const EmployerApplicationsScreen: React.FC = () => {
   };
 
   const handleNoShow = (app: JobApplication) => {
-    Alert.alert(
-      'Сообщить о неявке',
-      'Работник не вышел на смену? Это повлияет на его рейтинг.',
-      [
-        { text: 'Отмена', style: 'cancel' },
-        {
-          text: 'Подтвердить неявку',
-          style: 'destructive',
-          onPress: async () => {
-            await reportNoShow(app.id, app.worker_id);
-            load();
-          },
+    Alert.alert('Сообщить о неявке', 'Работник не вышел на смену? Это повлияет на его рейтинг.', [
+      { text: 'Отмена', style: 'cancel' },
+      {
+        text: 'Подтвердить неявку',
+        style: 'destructive',
+        onPress: async () => {
+          await reportNoShow(app.id, app.worker_id);
+          load();
         },
-      ]
-    );
+      },
+    ]);
   };
 
   const handleRate = (app: JobApplication) => {
@@ -133,11 +137,17 @@ export const EmployerApplicationsScreen: React.FC = () => {
 
         {item.status === 'applied' && (
           <View style={styles.actions}>
-            <TouchableOpacity style={[styles.btn, styles.acceptBtn]} onPress={() => handleAccept(item)}>
+            <TouchableOpacity
+              style={[styles.btn, styles.acceptBtn]}
+              onPress={() => handleAccept(item)}
+            >
               <Check size={16} color="#fff" />
               <Text style={styles.acceptBtnText}>Принять</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.btn, styles.rejectBtn]} onPress={() => handleReject(item)}>
+            <TouchableOpacity
+              style={[styles.btn, styles.rejectBtn]}
+              onPress={() => handleReject(item)}
+            >
               <X size={16} color={theme.colors.danger} />
               <Text style={styles.rejectBtnText}>Отклонить</Text>
             </TouchableOpacity>
@@ -146,10 +156,16 @@ export const EmployerApplicationsScreen: React.FC = () => {
 
         {item.status === 'accepted' && (
           <View style={styles.actions}>
-            <TouchableOpacity style={[styles.btn, styles.acceptBtn]} onPress={() => handleRate(item)}>
+            <TouchableOpacity
+              style={[styles.btn, styles.acceptBtn]}
+              onPress={() => handleRate(item)}
+            >
               <Text style={styles.acceptBtnText}>Оценить</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.btn, styles.noShowBtn]} onPress={() => handleNoShow(item)}>
+            <TouchableOpacity
+              style={[styles.btn, styles.noShowBtn]}
+              onPress={() => handleNoShow(item)}
+            >
               <Text style={styles.noShowBtnText}>Неявка</Text>
             </TouchableOpacity>
           </View>
@@ -167,7 +183,9 @@ export const EmployerApplicationsScreen: React.FC = () => {
             <Text style={styles.back}>Назад</Text>
           </View>
         </TouchableOpacity>
-        <Text style={styles.headerTitle} numberOfLines={1}>{jobTitle}</Text>
+        <Text style={styles.headerTitle} numberOfLines={1}>
+          {jobTitle}
+        </Text>
       </View>
 
       {loading ? (

@@ -6,7 +6,6 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
-  Alert,
   ActivityIndicator,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
@@ -53,23 +52,28 @@ export const WorkerProfileScreen: React.FC = () => {
 
   const verificationColor = () => {
     switch (workerProfile?.verification_status) {
-      case 'verified': return theme.colors.success;
-      case 'rejected': return theme.colors.danger;
-      default: return '#FF8C00';
+      case 'verified':
+        return theme.colors.success;
+      case 'rejected':
+        return theme.colors.danger;
+      default:
+        return '#FF8C00';
     }
   };
 
   const verificationLabel = () => {
     switch (workerProfile?.verification_status) {
-      case 'verified': return 'Верифицирован';
-      case 'rejected': return 'Отклонён';
-      default: return 'На проверке';
+      case 'verified':
+        return 'Верифицирован';
+      case 'rejected':
+        return 'Отклонён';
+      default:
+        return 'На проверке';
     }
   };
 
   const isSuspended =
-    workerProfile?.suspended_until &&
-    new Date(workerProfile.suspended_until) > new Date();
+    workerProfile?.suspended_until && new Date(workerProfile.suspended_until) > new Date();
 
   const suspendedUntil = isSuspended
     ? new Date(workerProfile!.suspended_until!).toLocaleDateString('ru-RU')
@@ -91,17 +95,21 @@ export const WorkerProfileScreen: React.FC = () => {
         {/* Header */}
         <View style={styles.profileHeader}>
           <View style={styles.avatarCircle}>
-            <Text style={styles.avatarText}>
-              {workerProfile.full_name.charAt(0).toUpperCase()}
-            </Text>
+            <Text style={styles.avatarText}>{workerProfile.full_name.charAt(0).toUpperCase()}</Text>
           </View>
           <View style={styles.profileInfo}>
             <Text style={styles.name}>{workerProfile.full_name}</Text>
-            {profile?.role && (
-              <Text style={styles.role}>Соискатель</Text>
-            )}
+            {profile?.role && <Text style={styles.role}>Соискатель</Text>}
           </View>
-          <View style={[styles.verBadge, { borderColor: verificationColor() + '40', backgroundColor: verificationColor() + '15' }]}>
+          <View
+            style={[
+              styles.verBadge,
+              {
+                borderColor: verificationColor() + '40',
+                backgroundColor: verificationColor() + '15',
+              },
+            ]}
+          >
             {workerProfile.verification_status === 'verified' ? (
               <Check size={13} color={verificationColor()} />
             ) : workerProfile.verification_status === 'rejected' ? (
@@ -181,7 +189,12 @@ export const WorkerProfileScreen: React.FC = () => {
                 <Text style={styles.appJobTitle} numberOfLines={1}>
                   {(app.job as any)?.title ?? 'Вакансия'}
                 </Text>
-                <View style={[styles.appStatusBadge, { backgroundColor: STATUS_COLORS[app.status] + '20' }]}>
+                <View
+                  style={[
+                    styles.appStatusBadge,
+                    { backgroundColor: STATUS_COLORS[app.status] + '20' },
+                  ]}
+                >
                   <Text style={[styles.appStatusText, { color: STATUS_COLORS[app.status] }]}>
                     {STATUS_LABELS[app.status] ?? app.status}
                   </Text>

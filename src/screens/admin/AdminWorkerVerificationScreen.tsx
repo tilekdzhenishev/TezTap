@@ -11,7 +11,12 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import { fetchPendingWorkers, verifyWorker, rejectWorkerProfile, getWorkerDocSignedUrl } from '../../supabase/client';
+import {
+  fetchPendingWorkers,
+  verifyWorker,
+  rejectWorkerProfile,
+  getWorkerDocSignedUrl,
+} from '../../supabase/client';
 import { WorkerProfile } from '../../types';
 import { theme } from '../../utils/theme';
 import { ArrowLeft, BadgeCheck, Camera, Check, IdCard, RefreshCw, X } from 'lucide-react-native';
@@ -36,16 +41,18 @@ export const AdminWorkerVerificationScreen: React.FC = () => {
         passportSignedUrl: w.passport_front_url
           ? await getWorkerDocSignedUrl(w.passport_front_url)
           : null,
-        selfieSignedUrl: w.selfie_url
-          ? await getWorkerDocSignedUrl(w.selfie_url)
-          : null,
+        selfieSignedUrl: w.selfie_url ? await getWorkerDocSignedUrl(w.selfie_url) : null,
       }))
     );
     setWorkers(withUrls);
     setLoading(false);
   }, []);
 
-  useFocusEffect(useCallback(() => { load(); }, [load]));
+  useFocusEffect(
+    useCallback(() => {
+      load();
+    }, [load])
+  );
 
   const handleVerify = async (worker: WorkerProfile) => {
     Alert.alert('Верифицировать', `Подтвердить личность ${worker.full_name}?`, [
@@ -89,12 +96,8 @@ export const AdminWorkerVerificationScreen: React.FC = () => {
           </View>
           <View style={styles.info}>
             <Text style={styles.name}>{item.full_name}</Text>
-            {item.birth_year && (
-              <Text style={styles.detail}>Год рождения: {item.birth_year}</Text>
-            )}
-            {item.phone && (
-              <Text style={styles.detail}>Телефон: {item.phone}</Text>
-            )}
+            {item.birth_year && <Text style={styles.detail}>Год рождения: {item.birth_year}</Text>}
+            {item.phone && <Text style={styles.detail}>Телефон: {item.phone}</Text>}
             <Text style={styles.detail}>
               Зарегистрирован: {new Date(item.created_at).toLocaleDateString('ru-RU')}
             </Text>

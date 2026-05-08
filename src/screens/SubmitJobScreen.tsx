@@ -15,7 +15,16 @@ import { JobDraft, DURATION_OPTIONS, EXPERIENCE_OPTIONS } from '../types';
 import { submitJob } from '../supabase/client';
 import { RootStackParamList } from '../types/navigation';
 import { theme } from '../utils/theme';
-import { ArrowLeft, ArrowRight, BriefcaseBusiness, CheckCircle, Clock, MapPin, Timer, X } from 'lucide-react-native';
+import {
+  ArrowLeft,
+  ArrowRight,
+  BriefcaseBusiness,
+  CheckCircle,
+  Clock,
+  MapPin,
+  Timer,
+  X,
+} from 'lucide-react-native';
 
 type SubmitJobRouteProp = RouteProp<RootStackParamList, 'SubmitJob'>;
 
@@ -61,7 +70,7 @@ export const SubmitJobScreen: React.FC = () => {
     }
 
     if (draft.duration === 'Другое' && customDuration) {
-      setDraft(prev => ({ ...prev, duration: customDuration }));
+      setDraft((prev) => ({ ...prev, duration: customDuration }));
     }
 
     if (step < STEPS.length - 1) {
@@ -96,32 +105,26 @@ export const SubmitJobScreen: React.FC = () => {
     setSubmitting(false);
 
     if (result) {
-      Alert.alert(
-        'Спасибо!',
-        'Смена отправлена на проверку.',
-        [{ text: 'OK', onPress: () => navigation.goBack() }]
-      );
+      Alert.alert('Спасибо!', 'Смена отправлена на проверку.', [
+        { text: 'OK', onPress: () => navigation.goBack() },
+      ]);
     } else {
       Alert.alert('Ошибка', 'Не удалось отправить. Попробуйте снова.');
     }
   };
 
   const handleReset = () => {
-    Alert.alert(
-      'Заполнить заново',
-      'Все данные будут удалены.',
-      [
-        { text: 'Отмена', style: 'cancel' },
-        {
-          text: 'Да',
-          onPress: () => {
-            setDraft(initialDraft);
-            setCustomDuration('');
-            setStep(0);
-          },
+    Alert.alert('Заполнить заново', 'Все данные будут удалены.', [
+      { text: 'Отмена', style: 'cancel' },
+      {
+        text: 'Да',
+        onPress: () => {
+          setDraft(initialDraft);
+          setCustomDuration('');
+          setStep(0);
         },
-      ]
-    );
+      },
+    ]);
   };
 
   return (
@@ -140,10 +143,7 @@ export const SubmitJobScreen: React.FC = () => {
         {STEPS.map((_, i) => (
           <View
             key={i}
-            style={[
-              styles.stepDot,
-              i <= step ? styles.stepDotActive : styles.stepDotInactive,
-            ]}
+            style={[styles.stepDot, i <= step ? styles.stepDotActive : styles.stepDotInactive]}
           />
         ))}
       </View>
@@ -185,16 +185,10 @@ export const SubmitJobScreen: React.FC = () => {
 
         {step === STEPS.length - 1 && (
           <View style={styles.previewActions}>
-            <TouchableOpacity
-              style={styles.resetButton}
-              onPress={handleReset}
-            >
+            <TouchableOpacity style={styles.resetButton} onPress={handleReset}>
               <Text style={styles.resetButtonText}>Заново</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.backButton}
-              onPress={handleBack}
-            >
+            <TouchableOpacity style={styles.backButton} onPress={handleBack}>
               <ArrowLeft size={18} color={theme.colors.textSecondary} />
               <Text style={styles.backButtonText}>Изменить</Text>
             </TouchableOpacity>
@@ -203,9 +197,7 @@ export const SubmitJobScreen: React.FC = () => {
               onPress={handleSubmit}
               disabled={submitting}
             >
-              <Text style={styles.nextButtonText}>
-                {submitting ? 'Отправка...' : 'Отправить'}
-              </Text>
+              <Text style={styles.nextButtonText}>{submitting ? 'Отправка...' : 'Отправить'}</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -282,9 +274,7 @@ const StepPayment: React.FC<{
 }> = ({ draft, setDraft }) => (
   <View style={styles.stepContent}>
     <Text style={styles.question}>Сколько платите?</Text>
-    <Text style={styles.examples}>
-      Например: 1500 сом / день, 700 сом / смена, 250 сом / час
-    </Text>
+    <Text style={styles.examples}>Например: 1500 сом / день, 700 сом / смена, 250 сом / час</Text>
     <TextInput
       style={styles.input}
       value={draft.payment}
@@ -310,18 +300,10 @@ const StepDuration: React.FC<{
       {DURATION_OPTIONS.map((opt) => (
         <TouchableOpacity
           key={opt}
-          style={[
-            styles.optionButton,
-            draft.duration === opt && styles.optionButtonSelected,
-          ]}
+          style={[styles.optionButton, draft.duration === opt && styles.optionButtonSelected]}
           onPress={() => setDraft((prev: JobDraft) => ({ ...prev, duration: opt }))}
         >
-          <Text
-            style={[
-              styles.optionText,
-              draft.duration === opt && styles.optionTextSelected,
-            ]}
-          >
+          <Text style={[styles.optionText, draft.duration === opt && styles.optionTextSelected]}>
             {opt}
           </Text>
         </TouchableOpacity>
@@ -368,9 +350,7 @@ const StepLocation: React.FC<{
 }> = ({ draft, setDraft }) => (
   <View style={styles.stepContent}>
     <Text style={styles.question}>Где находится работа?</Text>
-    <Text style={styles.examples}>
-      Например: Бишкек, центр, Ошский рынок, Удалённо
-    </Text>
+    <Text style={styles.examples}>Например: Бишкек, центр, Ошский рынок, Удалённо</Text>
     <TextInput
       style={styles.input}
       value={draft.location}
@@ -419,18 +399,10 @@ const StepExperience: React.FC<{
       {EXPERIENCE_OPTIONS.map((opt) => (
         <TouchableOpacity
           key={opt}
-          style={[
-            styles.optionButton,
-            draft.experience === opt && styles.optionButtonSelected,
-          ]}
+          style={[styles.optionButton, draft.experience === opt && styles.optionButtonSelected]}
           onPress={() => setDraft((prev: JobDraft) => ({ ...prev, experience: opt }))}
         >
-          <Text
-            style={[
-              styles.optionText,
-              draft.experience === opt && styles.optionTextSelected,
-            ]}
-          >
+          <Text style={[styles.optionText, draft.experience === opt && styles.optionTextSelected]}>
             {opt}
           </Text>
         </TouchableOpacity>
@@ -445,9 +417,7 @@ const StepCompany: React.FC<{
 }> = ({ draft, setDraft }) => (
   <View style={styles.stepContent}>
     <Text style={styles.question}>Название компании или заведения?</Text>
-    <Text style={styles.examples}>
-      Например: Globus, Кафе в центре, Склад одежды
-    </Text>
+    <Text style={styles.examples}>Например: Globus, Кафе в центре, Склад одежды</Text>
     <TextInput
       style={styles.input}
       value={draft.company_name}
@@ -465,9 +435,7 @@ const StepContact: React.FC<{
 }> = ({ draft, setDraft }) => (
   <View style={styles.stepContent}>
     <Text style={styles.question}>Куда кандидату писать?</Text>
-    <Text style={styles.examples}>
-      @username, https://t.me/username, +996 XXX XXX XXX
-    </Text>
+    <Text style={styles.examples}>@username, https://t.me/username, +996 XXX XXX XXX</Text>
     <TextInput
       style={styles.input}
       value={draft.contact_url}
@@ -500,9 +468,7 @@ const StepPreview: React.FC<{ draft: JobDraft }> = ({ draft }) => (
         </View>
       </View>
       <Text style={styles.previewDescription}>{draft.description}</Text>
-      {draft.experience && (
-        <Text style={styles.previewExperience}>{draft.experience}</Text>
-      )}
+      {draft.experience && <Text style={styles.previewExperience}>{draft.experience}</Text>}
       <View style={styles.previewDivider} />
       <View style={styles.previewDetailRow}>
         <CheckCircle size={14} color={theme.colors.success} />

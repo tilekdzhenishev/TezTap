@@ -1,5 +1,14 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, FlatList, TouchableOpacity, ActivityIndicator, Linking } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+  Linking,
+} from 'react-native';
 import { Banknote, MapPin, Phone, Timer, X } from 'lucide-react-native';
 import { useStore } from '../store/appStore';
 import { SavedJob } from '../types';
@@ -28,10 +37,7 @@ export const SavedJobsScreen: React.FC = () => {
       <View style={styles.card}>
         <View style={styles.cardHeader}>
           <Text style={styles.title}>{job.title}</Text>
-          <TouchableOpacity
-            style={styles.unsaveButton}
-            onPress={() => unsaveJob(item.id)}
-          >
+          <TouchableOpacity style={styles.unsaveButton} onPress={() => unsaveJob(item.id)}>
             <X size={16} color={theme.colors.textSecondary} />
           </TouchableOpacity>
         </View>
@@ -75,9 +81,7 @@ export const SavedJobsScreen: React.FC = () => {
       <SafeAreaView style={styles.container}>
         <View style={styles.center}>
           <Text style={styles.emptyTitle}>Пока нет сохранённых подработок</Text>
-          <Text style={styles.emptyText}>
-            Просматривайте подработки и сохраняйте интересные
-          </Text>
+          <Text style={styles.emptyText}>Просматривайте подработки и сохраняйте интересные</Text>
         </View>
       </SafeAreaView>
     );

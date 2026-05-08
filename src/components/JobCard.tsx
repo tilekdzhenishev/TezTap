@@ -74,9 +74,7 @@ export const JobCard: React.FC<JobCardProps> = ({
 
       <Text style={styles.description}>{job.description}</Text>
 
-      {job.experience && (
-        <Text style={styles.experience}>{job.experience}</Text>
-      )}
+      {job.experience && <Text style={styles.experience}>{job.experience}</Text>}
 
       <View style={styles.divider} />
 

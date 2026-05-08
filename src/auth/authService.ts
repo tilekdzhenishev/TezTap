@@ -59,16 +59,18 @@ export interface SignUpEmployerData {
 }
 
 export async function authSignUpUser(data: SignUpUserData) {
-  const { data: authData, error } = await runAuthRequest(() => supabase.auth.signUp({
-    email: data.email.trim().toLowerCase(),
-    password: data.password,
-    options: {
-      data: {
-        full_name: data.fullName.trim(),
-        role: 'user',
+  const { data: authData, error } = await runAuthRequest(() =>
+    supabase.auth.signUp({
+      email: data.email.trim().toLowerCase(),
+      password: data.password,
+      options: {
+        data: {
+          full_name: data.fullName.trim(),
+          role: 'user',
+        },
       },
-    },
-  }));
+    })
+  );
   if (error) throw mapAuthError(error);
   if (!authData.user) throw new Error('Registration failed');
 
@@ -85,20 +87,22 @@ export async function authSignUpUser(data: SignUpUserData) {
 }
 
 export async function authSignUpEmployer(data: SignUpEmployerData) {
-  const { data: authData, error } = await runAuthRequest(() => supabase.auth.signUp({
-    email: data.email.trim().toLowerCase(),
-    password: data.password,
-    options: {
-      data: {
-        full_name: data.companyName.trim(),
-        role: 'employer',
-        business_name: data.companyName.trim(),
-        business_type: data.industry || 'Другое',
-        contact_phone: data.contactPhone?.trim() || '',
-        description: data.description?.trim() || null,
+  const { data: authData, error } = await runAuthRequest(() =>
+    supabase.auth.signUp({
+      email: data.email.trim().toLowerCase(),
+      password: data.password,
+      options: {
+        data: {
+          full_name: data.companyName.trim(),
+          role: 'employer',
+          business_name: data.companyName.trim(),
+          business_type: data.industry || 'Другое',
+          contact_phone: data.contactPhone?.trim() || '',
+          description: data.description?.trim() || null,
+        },
       },
-    },
-  }));
+    })
+  );
   if (error) throw mapAuthError(error);
   if (!authData.user) throw new Error('Registration failed');
 
@@ -125,10 +129,12 @@ export async function authSignUpEmployer(data: SignUpEmployerData) {
 }
 
 export async function authSignIn(email: string, password: string) {
-  const { data, error } = await runAuthRequest(() => supabase.auth.signInWithPassword({
-    email: email.trim().toLowerCase(),
-    password,
-  }));
+  const { data, error } = await runAuthRequest(() =>
+    supabase.auth.signInWithPassword({
+      email: email.trim().toLowerCase(),
+      password,
+    })
+  );
   if (error) throw mapAuthError(error);
   return data;
 }
@@ -139,9 +145,9 @@ export async function authSignOut() {
 }
 
 export async function authResetPassword(email: string) {
-  const { error } = await runAuthRequest(() => supabase.auth.resetPasswordForEmail(
-    email.trim().toLowerCase()
-  ));
+  const { error } = await runAuthRequest(() =>
+    supabase.auth.resetPasswordForEmail(email.trim().toLowerCase())
+  );
   if (error) throw mapAuthError(error);
 }
 

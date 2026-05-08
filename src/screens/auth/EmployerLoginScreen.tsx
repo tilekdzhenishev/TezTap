@@ -98,7 +98,10 @@ export const EmployerLoginScreen: React.FC = () => {
               <AuthInput
                 label="Рабочий Email"
                 value={email}
-                onChangeText={(t) => { setEmail(t); setErrors((p) => ({ ...p, email: '' })); }}
+                onChangeText={(t) => {
+                  setEmail(t);
+                  setErrors((p) => ({ ...p, email: '' }));
+                }}
                 placeholder="company@example.com"
                 keyboardType="email-address"
                 error={errors.email}
@@ -108,7 +111,10 @@ export const EmployerLoginScreen: React.FC = () => {
               <AuthInput
                 label="Пароль"
                 value={password}
-                onChangeText={(t) => { setPassword(t); setErrors((p) => ({ ...p, password: '' })); }}
+                onChangeText={(t) => {
+                  setPassword(t);
+                  setErrors((p) => ({ ...p, password: '' }));
+                }}
                 secureTextEntry
                 placeholder="••••••••"
                 autoComplete="current-password"
@@ -172,7 +178,13 @@ const styles = StyleSheet.create({
   },
   badgeText: { fontSize: 11, fontWeight: '800', color: '#FF8C00', letterSpacing: 1.5 },
   header: { marginBottom: 36 },
-  title: { fontSize: 32, fontWeight: '800', color: '#FFFFFF', letterSpacing: -0.5, marginBottom: 8 },
+  title: {
+    fontSize: 32,
+    fontWeight: '800',
+    color: '#FFFFFF',
+    letterSpacing: -0.5,
+    marginBottom: 8,
+  },
   subtitle: { fontSize: 16, color: '#666666' },
   form: { gap: 0 },
   spacer: { height: 16 },

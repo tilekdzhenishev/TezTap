@@ -8,7 +8,6 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   TextInput,
-  Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useStore } from '../store/appStore';
@@ -105,9 +104,7 @@ export const AdminEmployerReviewScreen: React.FC = () => {
           <Text style={styles.backBtnText}>Назад</Text>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Работодатели</Text>
-        <Text style={styles.headerCounter}>
-          {pendingEmployers.length - currentIndex} ожидает
-        </Text>
+        <Text style={styles.headerCounter}>{pendingEmployers.length - currentIndex} ожидает</Text>
       </View>
 
       {actionFeedback ? (
