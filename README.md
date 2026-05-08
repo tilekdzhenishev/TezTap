@@ -1,17 +1,19 @@
-# TezTap — Быстрые подработки в Бишкеке
+# TezTap
 
-Mobile MVP for short-term jobs / подработки in Bishkek, Kyrgyzstan.
+Mobile MVP for short-term jobs in Bishkek, Kyrgyzstan.
 
-Users open the app and see one short-term job card at a time. They can skip, save, or contact the employer.
+Users open the app and see one approved job card at a time. They can skip, save, or contact the employer. Employers can submit jobs through a guided form, and admins approve jobs before they appear in the public feed.
 
 ## Features
 
-- **Job Feed** — One approved job at a time (no long lists)
-- **Saved Jobs** — Bookmark interesting opportunities
-- **Submit Job** — Guided multi-step form for employers
-- **Admin Review** — Approve/reject submitted jobs before they go public
+- **Job Feed**: one approved job at a time, without long lists
+- **Saved Jobs**: bookmark interesting opportunities
+- **Employer Portal**: employer onboarding, verification status, and job management
+- **Submit Job**: guided multi-step form for employers
+- **Worker Profile**: worker onboarding, verification, and application history
+- **Admin Review**: approve or reject employers, workers, and submitted jobs
 
-## How to Install
+## Installation
 
 ```bash
 # Clone or copy the project
@@ -20,135 +22,155 @@ cd TezTap
 # Install dependencies
 npm install
 
-# Create local environment file
+# Create the local environment file
 cp .env.example environment.env
 ```
 
-## How to Set Up Supabase
+Edit `environment.env` with your local values. This file is ignored by Git and must not be committed.
 
-1. Create a project at [supabase.com](https://supabase.com)
-2. Go to **SQL Editor** in your Supabase dashboard
-3. Run `supabase/schema.sql` to create tables and policies   - This file includes `jobs`, `saved_jobs`, and `employers`4. Run `supabase/seed.sql` to add 15 sample jobs
-5. Copy your project URL, anon key, and local admin code into `environment.env`.
-   This file is ignored by Git and must not be committed:
-
-```
+```env
 EXPO_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 EXPO_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 EXPO_PUBLIC_ADMIN_CODE=change-this-local-admin-code
 ```
 
-## SQL Schema
+## Supabase Setup
 
-### `jobs` table
+1. Create a project at [supabase.com](https://supabase.com).
+2. Open **SQL Editor** in the Supabase dashboard.
+3. Run `supabase/schema.sql` to create the tables, policies, triggers, and storage setup.
+4. Run `supabase/seed.sql` if you want sample jobs for local testing.
+5. Copy the project URL and anon key into `environment.env`.
+
+Phone authentication requires an SMS provider in Supabase Auth settings. Email authentication may require custom SMTP for production traffic and reliable rate limits.
+
+## Database Overview
+
+### `jobs`
 
 | Column | Type | Description |
-|--------|------|-------------|
+| --- | --- | --- |
 | id | uuid | Primary key |
 | title | text | Job title |
 | description | text | Job description |
-| payment | text | Payment info (e.g. "1500 сом / день") |
-| duration | text | Duration (e.g. "Сегодня", "3–7 дней") |
-| schedule | text | Schedule (e.g. "09:00–18:00") |
-| location | text | Location |
+| payment | text | Payment details |
+| duration | text | Job duration |
+| schedule | text | Work schedule |
+| location | text | Job location |
 | experience | text | Experience requirement |
 | company_name | text | Company name |
 | contact_url | text | Telegram URL, username, or phone |
 | status | text | pending / approved / rejected |
-| is_active | boolean | Whether job is visible in feed |
+| is_active | boolean | Whether the job is visible in the feed |
 | created_at | timestamptz | Creation timestamp |
-| closed_at | timestamptz | When job was closed |
+| closed_at | timestamptz | Close timestamp |
 
-### `saved_jobs` table
+### `saved_jobs`
 
 | Column | Type | Description |
-|--------|------|-------------|
+| --- | --- | --- |
 | id | uuid | Primary key |
-| job_id | uuid | Reference to jobs table |
+| job_id | uuid | Reference to `jobs` |
 | device_id | text | Device identifier |
-| created_at | timestamptz | When saved |
+| created_at | timestamptz | Save timestamp |
 
-## How to Seed Jobs
+The schema also includes user profiles, employer profiles, worker profiles, job applications, verification flows, and storage policies for worker documents.
 
-Run `supabase/seed.sql` in the Supabase SQL Editor. It inserts 15 approved, active jobs with realistic Bishkek data.
+## Running The App
 
-## How to Run Expo
+Use the npm scripts so Expo loads `environment.env`:
 
 ```bash
-npx expo start
+npm run start
 ```
 
 Then:
-- Press `i` for iOS simulator
-- Press `a` for Android emulator
-- Scan QR code with Expo Go app on your phone
 
-## How to Test Employer Submission
+- Press `i` for the iOS simulator.
+- Press `a` for the Android emulator.
+- Scan the QR code with Expo Go or use the custom development client.
 
-1. Open the app
-2. Go to **Разместить** tab
-3. Fill out the 9-step form (each step validates input)
-4. Review the preview card
-5. Tap **Отправить**
-6. The job is saved with `status = "pending"` and `is_active = false`
+For native rebuilds:
 
-## How to Approve Jobs
+```bash
+npm run ios
+npm run android
+```
 
-1. Open the app
-2. Tap the admin lock icon in the top-right header, or long-press the TezTap logo 5 times
-3. Enter the admin code from `EXPO_PUBLIC_ADMIN_CODE` in `environment.env`
-4. Review pending jobs one by one
-5. Tap **Опубликовать** to approve or **Отклонить** to reject
-6. Approved jobs immediately appear in the public feed
+## Employer Flow
+
+1. Open the app.
+2. Sign up or sign in as an employer.
+3. Complete the employer profile.
+4. Wait for admin approval.
+5. Submit a job through the guided job form.
+6. The job is saved with `status = "pending"` and `is_active = false`.
+7. After admin approval, the job appears in the public feed.
+
+## Worker Flow
+
+1. Open the app.
+2. Sign up or sign in as a worker.
+3. Complete worker onboarding.
+4. Optionally upload verification documents.
+5. Browse approved jobs in the feed.
+6. Save jobs or apply/contact the employer depending on the job state.
+
+## Admin Flow
+
+1. Open the app.
+2. Tap the admin lock icon in the top-right header, or long-press the TezTap logo five times.
+3. Enter the admin code from `EXPO_PUBLIC_ADMIN_CODE` in `environment.env`.
+4. Review pending employers, workers, and jobs.
+5. Approve or reject submitted records.
+6. Approved jobs immediately appear in the public feed.
 
 ## Tech Stack
 
 - React Native + Expo
 - TypeScript
-- Supabase (PostgreSQL)
-- React Navigation (bottom tabs + stack)
-- Zustand (state management)
-- Expo SecureStore (device ID storage)
+- Supabase PostgreSQL
+- Supabase Auth
+- React Navigation
+- Zustand
+- Expo SecureStore
+- Lucide React Native icons
 
 ## Project Structure
 
-```
+```text
 TezTap/
-├── App.tsx                          # Root app with navigation
+├── App.tsx
+├── app.json
+├── index.ts
+├── package.json
 ├── supabase/
-│   ├── schema.sql                   # Database schema + RLS policies
-│   └── seed.sql                     # 15 sample jobs
+│   ├── schema.sql
+│   └── seed.sql
 ├── src/
-│   ├── screens/
-│   │   ├── WelcomeScreen.tsx        # Welcome / landing screen
-│   │   ├── JobFeedScreen.tsx        # One job at a time feed
-│   │   ├── SavedJobsScreen.tsx      # Saved jobs list
-│   │   ├── SubmitJobScreen.tsx      # Multi-step employer form
-│   │   ├── AdminAuthScreen.tsx      # Admin code entry
-│   │   └── AdminReviewScreen.tsx    # Approve/reject pending jobs
+│   ├── auth/
 │   ├── components/
-│   │   ├── JobCard.tsx              # Public job card component
-│   │   └── AdminJobCard.tsx         # Admin review job card
+│   ├── navigation/
+│   ├── screens/
 │   ├── store/
-│   │   └── appStore.ts              # Zustand state management
 │   ├── supabase/
-│   │   └── client.ts                # Supabase client + queries
 │   ├── types/
-│   │   ├── index.ts                 # TypeScript types
-│   │   └── navigation.ts            # Navigation type definitions
-│   ├── utils/
-│   │   ├── theme.ts                 # Design tokens (colors, spacing)
-│   │   └── deviceId.ts              # Device ID generation + storage
-│   └── navigation/
-│       └── MainTabs.tsx             # Bottom tab navigator
-├── .env.example                     # Environment variables template
-├── environment.env                  # Local ignored environment variables
-└── app.json                         # Expo configuration
+│   └── utils/
+├── .env.example
+├── environment.env
+└── README.md
 ```
 
 ## Design
 
-- Dark background (#0F0F0F) with orange accent (#FF8C00)
-- Card-based, premium look
-- Large typography, strong CTA buttons
-- All user-facing text in Russian
+- Dark interface with orange accent color
+- Card-based mobile UI
+- Large touch targets for fast job browsing
+- Icon-based actions instead of emoji
+- User-facing app text is currently Russian
+
+## Security Notes
+
+- `environment.env` is ignored by Git and should stay local.
+- Do not put Supabase service role keys or private provider secrets into Expo `EXPO_PUBLIC_*` variables.
+- `EXPO_PUBLIC_*` values are bundled into the client app, so they must be safe for public client usage.
