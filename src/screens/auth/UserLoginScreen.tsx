@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
   },
   forgotText: {
     fontSize: 14,
-    color: '#FF8C00',
+    color: '#60A5FA',
     fontWeight: '600',
   },
   submitSpacer: {
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
   },
   footerLink: {
     fontSize: 15,
-    color: '#FF8C00',
+    color: '#60A5FA',
     fontWeight: '700',
   },
 });

@@ -27,7 +27,7 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 const STATUS_COLORS: Record<string, string> = {
-  applied: '#FF8C00',
+  applied: '#60A5FA',
   accepted: '#22C55E',
   completed: '#3B82F6',
   no_show: '#EF4444',
@@ -60,7 +60,7 @@ export const WorkerProfileScreen: React.FC = () => {
       case 'rejected':
         return theme.colors.danger;
       default:
-        return '#FF8C00';
+        return '#60A5FA';
     }
   };
 
@@ -164,9 +164,9 @@ export const WorkerProfileScreen: React.FC = () => {
           </View>
         )}
         {!workerProfile.is_banned && isSuspended && (
-          <View style={[styles.alertBox, { borderLeftColor: '#FF8C00' }]}>
+          <View style={[styles.alertBox, { borderLeftColor: '#60A5FA' }]}>
             <View style={styles.alertTitleRow}>
-              <Ionicons name="pause-circle" size={16} color="#FF8C00" />
+              <Ionicons name="pause-circle" size={16} color="#60A5FA" />
               <Text style={styles.alertTitle}>Временная приостановка</Text>
             </View>
             <Text style={styles.alertText}>Доступ восстановится {suspendedUntil}.</Text>
@@ -195,7 +195,7 @@ export const WorkerProfileScreen: React.FC = () => {
 
         {/* No-show warnings */}
         {workerProfile.no_show_count === 1 && (
-          <View style={[styles.alertBox, { borderLeftColor: '#FF8C00' }]}>
+          <View style={[styles.alertBox, { borderLeftColor: '#60A5FA' }]}>
             <Text style={styles.alertText}>
               У вас 1 неявка. При 2 неявках аккаунт будет приостановлен на 7 дней.
             </Text>

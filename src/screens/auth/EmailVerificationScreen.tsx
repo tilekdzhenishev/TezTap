@@ -41,7 +41,7 @@ export const EmailVerificationScreen: React.FC = () => {
         <Animated.View
           style={[styles.iconWrap, { transform: [{ scale: scaleAnim }], opacity: opacityAnim }]}
         >
-          <Ionicons name="mail" size={42} color="#FF8C00" />
+          <Ionicons name="mail" size={42} color="#60A5FA" />
           <View style={styles.checkBadge}>
             <Ionicons name="checkmark" size={14} color="#000000" />
           </View>
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   subtitle: { fontSize: 15, color: '#666666', textAlign: 'center' },
   email: {
     fontSize: 15,
-    color: '#FF8C00',
+    color: '#60A5FA',
     fontWeight: '700',
     textAlign: 'center',
     marginTop: 4,
@@ -152,13 +152,13 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: '#FF8C0015',
+    backgroundColor: '#60A5FA15',
     borderWidth: 1,
-    borderColor: '#FF8C0030',
+    borderColor: '#60A5FA30',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  stepNumText: { fontSize: 13, fontWeight: '800', color: '#FF8C00' },
+  stepNumText: { fontSize: 13, fontWeight: '800', color: '#60A5FA' },
   stepText: { fontSize: 14, color: '#888888', fontWeight: '500' },
   actions: { alignSelf: 'stretch' },
   spacer: { height: 12 },

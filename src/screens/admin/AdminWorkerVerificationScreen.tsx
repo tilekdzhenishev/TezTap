@@ -10,13 +10,14 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import {
   fetchPendingWorkers,
   verifyWorker,
   rejectWorkerProfile,
   getWorkerDocSignedUrl,
 } from '../../supabase/client';
+import { AdminEmptyState } from '../../components/admin/AdminEmptyState';
 import { WorkerProfile } from '../../types';
 import { theme } from '../../utils/theme';
 import { Ionicons } from '@expo/vector-icons';
@@ -27,7 +28,6 @@ type WorkerWithSignedUrls = WorkerProfile & {
 };
 
 export const AdminWorkerVerificationScreen: React.FC = () => {
-  const navigation = useNavigation();
   const [workers, setWorkers] = useState<WorkerWithSignedUrls[]>([]);
   const [loading, setLoading] = useState(true);
   const [acting, setActing] = useState<string | null>(null);
@@ -161,31 +161,18 @@ export const AdminWorkerVerificationScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <View style={styles.backRow}>
-            <Ionicons name="arrow-back" size={18} color={theme.colors.textSecondary} />
-            <Text style={styles.back}>Назад</Text>
-          </View>
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Работники</Text>
-        <Text style={styles.counter}>{workers.length} ожидает</Text>
-      </View>
-
       {loading ? (
         <View style={styles.center}>
           <ActivityIndicator size="large" color={theme.colors.admin} />
         </View>
       ) : workers.length === 0 ? (
-        <View style={styles.center}>
-          <Ionicons name="shield-checkmark" size={48} color={theme.colors.success} />
-          <Text style={styles.emptyTitle}>Все проверено</Text>
-          <Text style={styles.emptyText}>Нет ожидающих верификации работников</Text>
-          <TouchableOpacity style={styles.refreshBtn} onPress={load}>
-            <Ionicons name="refresh" size={16} color="#000000" />
-            <Text style={styles.refreshBtnText}>Обновить</Text>
-          </TouchableOpacity>
-        </View>
+        <AdminEmptyState
+          icon="shield-checkmark"
+          title="Все проверено"
+          description="Нет ожидающих верификации работников"
+          actionLabel="Обновить"
+          onAction={load}
+        />
       ) : (
         <FlatList
           data={workers}
@@ -208,24 +195,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.spacing.md,
     paddingVertical: theme.spacing.sm,
   },
-  backRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
-  back: { fontSize: 15, color: theme.colors.textSecondary, fontWeight: '600' },
-  headerTitle: { flex: 1, fontSize: 18, fontWeight: '800', color: theme.colors.admin },
-  counter: { fontSize: 14, color: theme.colors.textMuted, fontWeight: '600' },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center', gap: 10, padding: 24 },
-  emptyTitle: { fontSize: 22, fontWeight: '800', color: theme.colors.text },
-  emptyText: { fontSize: 15, color: theme.colors.textSecondary, textAlign: 'center' },
-  refreshBtn: {
-    backgroundColor: theme.colors.admin,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 10,
-    marginTop: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  refreshBtnText: { fontSize: 15, fontWeight: '700', color: '#000' },
   list: { padding: theme.spacing.md, gap: theme.spacing.md },
   card: {
     backgroundColor: theme.colors.card,

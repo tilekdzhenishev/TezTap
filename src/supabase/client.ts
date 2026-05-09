@@ -92,14 +92,15 @@ export async function fetchPendingJobs(): Promise<Job[]> {
   return data as Job[];
 }
 
-export async function submitJob(job: Omit<Job, 'id' | 'created_at'>): Promise<Job | null> {
-  const { data, error } = await supabase.from('jobs').insert(job).select().single();
-
+export async function submitJob(job: Omit<Job, 'id' | 'created_at'>): Promise<boolean> {
+  // Do NOT use .select().single() after insert — the SELECT RLS only exposes approved+active
+  // jobs, so a freshly-inserted pending job would trigger a false RLS violation on RETURNING.
+  const { error } = await supabase.from('jobs').insert(job);
   if (error) {
     console.error('Error submitting job:', error);
-    return null;
+    return false;
   }
-  return data as Job;
+  return true;
 }
 
 export async function approveJob(jobId: string): Promise<boolean> {
@@ -191,9 +192,14 @@ export async function fetchEmployerByUserId(userId: string): Promise<Employer | 
     .from('employers')
     .select('*')
     .eq('user_id', userId)
-    .single();
-  if (error) return null;
-  return data as Employer;
+    .order('created_at', { ascending: true })
+    .limit(1)
+    .maybeSingle();
+  if (error) {
+    console.error('Error fetching employer by user_id:', error);
+    return null;
+  }
+  return data as Employer | null;
 }
 
 // ── Employer verification ─────────────────────────────────────
@@ -240,16 +246,21 @@ export async function fetchPendingEmployers(): Promise<Employer[]> {
 }
 
 export async function approveEmployer(id: string): Promise<boolean> {
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from('employers')
     .update({
       verification_status: 'approved',
       reviewed_at: new Date().toISOString(),
     })
-    .eq('id', id);
+    .eq('id', id)
+    .select('id');
 
   if (error) {
     console.error('Error approving employer:', error);
+    return false;
+  }
+  if (!data?.length) {
+    console.error('approveEmployer: no row matched id', id);
     return false;
   }
   return true;
@@ -365,7 +376,10 @@ export async function fetchPendingWorkers(): Promise<WorkerProfile[]> {
     .eq('verification_status', 'pending')
     .order('created_at', { ascending: true });
 
-  if (error) return [];
+  if (error) {
+    console.error('Error fetching pending workers:', error);
+    return [];
+  }
   return data as WorkerProfile[];
 }
 
@@ -375,7 +389,10 @@ export async function verifyWorker(id: string): Promise<boolean> {
     .update({ verification_status: 'verified' })
     .eq('id', id);
 
-  if (error) return false;
+  if (error) {
+    console.error('Error verifying worker:', error);
+    return false;
+  }
   return true;
 }
 
@@ -385,7 +402,10 @@ export async function rejectWorkerProfile(id: string): Promise<boolean> {
     .update({ verification_status: 'rejected' })
     .eq('id', id);
 
-  if (error) return false;
+  if (error) {
+    console.error('Error rejecting worker:', error);
+    return false;
+  }
   return true;
 }
 
@@ -426,7 +446,10 @@ export async function getWorkerDocSignedUrl(
     .from('worker-docs')
     .createSignedUrl(path, expiresIn);
 
-  if (error || !data) return null;
+  if (error || !data) {
+    console.error('Error creating worker document signed URL:', error);
+    return null;
+  }
   return data.signedUrl;
 }
 

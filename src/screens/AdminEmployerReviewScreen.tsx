@@ -9,14 +9,14 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
+import { AdminEmptyState } from '../components/admin/AdminEmptyState';
+import { AdminFeedbackOverlay } from '../components/admin/AdminFeedbackOverlay';
 import { useStore } from '../store/appStore';
 import { theme } from '../utils/theme';
 import { Employer } from '../types';
-import { Ionicons } from '@expo/vector-icons';
 
 export const AdminEmployerReviewScreen: React.FC = () => {
-  const navigation = useNavigation();
   const { pendingEmployers, loading, loadPendingEmployers, approveEmployer, rejectEmployer } =
     useStore();
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -74,22 +74,13 @@ export const AdminEmployerReviewScreen: React.FC = () => {
   if (pendingEmployers.length === 0 || currentIndex >= pendingEmployers.length) {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-            <Ionicons name="arrow-back" size={18} color={theme.colors.textSecondary} />
-            <Text style={styles.backBtnText}>Назад</Text>
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Работодатели</Text>
-          <View style={styles.headerSpacer} />
-        </View>
-        <View style={styles.center}>
-          <Text style={styles.emptyTitle}>Нет заявок</Text>
-          <Text style={styles.emptyText}>Все заявки обработаны</Text>
-          <TouchableOpacity style={styles.refreshButton} onPress={loadPendingEmployers}>
-            <Ionicons name="refresh" size={16} color="#000000" />
-            <Text style={styles.refreshButtonText}>Обновить</Text>
-          </TouchableOpacity>
-        </View>
+        <AdminEmptyState
+          icon="business"
+          title="Нет заявок"
+          description="Все заявки работодателей обработаны"
+          actionLabel="Обновить"
+          onAction={loadPendingEmployers}
+        />
       </SafeAreaView>
     );
   }
@@ -98,20 +89,11 @@ export const AdminEmployerReviewScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={18} color={theme.colors.textSecondary} />
-          <Text style={styles.backBtnText}>Назад</Text>
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Работодатели</Text>
-        <Text style={styles.headerCounter}>{pendingEmployers.length - currentIndex} ожидает</Text>
-      </View>
-
-      {actionFeedback ? (
-        <View style={styles.feedbackOverlay}>
-          <Text style={styles.feedbackText}>{actionFeedback}</Text>
-        </View>
-      ) : null}
+      <AdminFeedbackOverlay
+        visible={Boolean(actionFeedback)}
+        tone={actionFeedback === 'Одобрено' ? 'success' : 'danger'}
+        text={actionFeedback ?? ''}
+      />
 
       <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContent}>
         <View style={styles.card}>
@@ -197,37 +179,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.background,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: theme.spacing.md,
-    paddingVertical: theme.spacing.sm,
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: '800',
-    color: theme.colors.admin,
-  },
-  headerCounter: {
-    fontSize: 14,
-    color: theme.colors.textMuted,
-    fontWeight: '600',
-  },
-  headerSpacer: {
-    width: 60,
-  },
-  backBtn: {
-    paddingVertical: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  backBtnText: {
-    fontSize: 15,
-    color: theme.colors.textSecondary,
-    fontWeight: '600',
   },
   center: {
     flex: 1,
@@ -362,51 +313,9 @@ const styles = StyleSheet.create({
     color: theme.colors.textMuted,
     fontWeight: '600',
   },
-  feedbackOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: theme.colors.overlay,
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 100,
-  },
-  feedbackText: {
-    fontSize: 32,
-    fontWeight: '800',
-    color: theme.colors.text,
-  },
   loadingText: {
     marginTop: theme.spacing.md,
     fontSize: 16,
     color: theme.colors.textSecondary,
-  },
-  emptyTitle: {
-    fontSize: 24,
-    fontWeight: '800',
-    color: theme.colors.text,
-    marginBottom: theme.spacing.sm,
-  },
-  emptyText: {
-    fontSize: 16,
-    color: theme.colors.textSecondary,
-    textAlign: 'center',
-    marginBottom: theme.spacing.xl,
-  },
-  refreshButton: {
-    backgroundColor: theme.colors.admin,
-    paddingHorizontal: theme.spacing.xl,
-    paddingVertical: theme.spacing.md,
-    borderRadius: theme.borderRadius.md,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  refreshButtonText: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#000000',
   },
 });

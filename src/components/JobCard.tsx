@@ -110,25 +110,34 @@ export const JobCard: React.FC<JobCardProps> = ({
       )}
 
       {onApply && (
-        <TouchableOpacity
-          style={[styles.actionButton, styles.applyButton, hasApplied && styles.applyButtonDone]}
-          onPress={onApply}
-          disabled={hasApplied}
-        >
-          {hasApplied ? (
-            <Ionicons
-              name="checkmark"
-              size={18}
-              color={theme.colors.success}
-              style={styles.buttonIcon}
-            />
-          ) : (
-            <Ionicons name="rocket" size={18} color="#000000" style={styles.buttonIcon} />
-          )}
-          <Text style={[styles.applyButtonText, hasApplied && styles.applyButtonTextDone]}>
-            {hasApplied ? 'Заявка отправлена' : 'Выйти на смену'}
-          </Text>
-        </TouchableOpacity>
+        <View style={[styles.applyPanel, hasApplied && styles.applyPanelDone]}>
+          <View style={styles.applyCopy}>
+            <View style={styles.applyTitleRow}>
+              <Ionicons
+                name={hasApplied ? 'checkmark-circle' : 'person-add'}
+                size={18}
+                color={hasApplied ? theme.colors.success : theme.colors.primary}
+              />
+              <Text style={styles.applyTitle}>Отклик на смену</Text>
+            </View>
+            <Text style={styles.applyHint}>
+              {hasApplied
+                ? 'Работодатель увидит вашу заявку в списке кандидатов.'
+                : 'Нажмите, чтобы работодатель понял, что вы готовы выйти.'}
+            </Text>
+          </View>
+          <TouchableOpacity
+            style={[styles.applyButton, hasApplied && styles.applyButtonDone]}
+            onPress={onApply}
+            disabled={hasApplied}
+            accessibilityRole="button"
+            accessibilityLabel={hasApplied ? 'Вы уже откликнулись' : 'Откликнуться на смену'}
+          >
+            <Text style={[styles.applyButtonText, hasApplied && styles.applyButtonTextDone]}>
+              {hasApplied ? 'Вы откликнулись' : 'Откликнуться'}
+            </Text>
+          </TouchableOpacity>
+        </View>
       )}
 
       <View style={styles.actions}>
@@ -243,16 +252,50 @@ const styles = StyleSheet.create({
     color: theme.colors.text,
     fontWeight: '600',
   },
-  applyButton: {
-    backgroundColor: theme.colors.primary,
+  applyPanel: {
+    backgroundColor: theme.colors.surface,
+    borderWidth: 1,
+    borderColor: theme.colors.primary + '55',
+    borderRadius: theme.borderRadius.md,
+    padding: theme.spacing.md,
     marginBottom: theme.spacing.sm,
+    gap: theme.spacing.md,
+  },
+  applyPanelDone: {
+    borderColor: theme.colors.success + '55',
+    backgroundColor: theme.colors.success + '12',
+  },
+  applyCopy: {
+    gap: theme.spacing.xs,
+  },
+  applyTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.spacing.xs,
+  },
+  applyTitle: {
+    fontSize: 15,
+    fontWeight: '800',
+    color: theme.colors.text,
+  },
+  applyHint: {
+    fontSize: 13,
+    lineHeight: 18,
+    color: theme.colors.textSecondary,
+  },
+  applyButton: {
+    backgroundColor: theme.colors.success,
+    borderRadius: theme.borderRadius.md,
+    paddingVertical: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   applyButtonDone: {
-    backgroundColor: theme.colors.success + '20',
+    backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: theme.colors.success + '40',
+    borderColor: theme.colors.success,
   },
-  applyButtonText: { fontSize: 16, fontWeight: '800', color: '#000' },
+  applyButtonText: { fontSize: 16, fontWeight: '800', color: '#000000' },
   applyButtonTextDone: { color: theme.colors.success },
   actions: {
     flexDirection: 'row',

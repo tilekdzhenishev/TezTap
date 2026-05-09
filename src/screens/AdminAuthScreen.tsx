@@ -11,10 +11,10 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../types/navigation';
+import { AuthStackParamList } from '../types/navigation';
 import { theme } from '../utils/theme';
 
-type NavProp = NativeStackNavigationProp<RootStackParamList>;
+type NavProp = NativeStackNavigationProp<AuthStackParamList>;
 
 export const AdminAuthScreen: React.FC = () => {
   const navigation = useNavigation<NavProp>();
@@ -24,12 +24,12 @@ export const AdminAuthScreen: React.FC = () => {
 
   const handleSubmit = () => {
     if (!adminCode) {
-      Alert.alert('Ошибка', 'Код администратора не настроен в environment.env');
+      Alert.alert('Ошибка', 'Код администратора не настроен в .env');
       return;
     }
 
     if (code === adminCode) {
-      navigation.navigate('AdminReview');
+      navigation.navigate('AdminTabs');
     } else {
       Alert.alert('Ошибка', 'Неверный код администратора');
     }

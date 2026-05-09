@@ -189,7 +189,7 @@ TezTap/
 │   ├── types/
 │   └── utils/
 ├── .env.example
-├── environment.env
+├── .env
 └── README.md
 ```
 

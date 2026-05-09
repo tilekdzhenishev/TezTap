@@ -73,7 +73,7 @@ export const ForgotPasswordScreen: React.FC = () => {
         >
           {!sent ? (
             <>
-              <Ionicons name="key" size={42} color="#FF8C00" style={styles.icon} />
+              <Ionicons name="key" size={42} color="#60A5FA" style={styles.icon} />
               <Text style={styles.title}>Сбросить пароль</Text>
               <Text style={styles.subtitle}>
                 Введите ваш email, и мы отправим ссылку для сброса пароля.
@@ -99,7 +99,7 @@ export const ForgotPasswordScreen: React.FC = () => {
             </>
           ) : (
             <>
-              <Ionicons name="mail" size={42} color="#FF8C00" style={styles.icon} />
+              <Ionicons name="mail" size={42} color="#60A5FA" style={styles.icon} />
               <Text style={styles.title}>Письмо отправлено</Text>
               <Text style={styles.subtitle}>
                 Мы отправили ссылку для сброса пароля на{'\n'}
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   subtitle: { fontSize: 16, color: '#666666', lineHeight: 24, marginBottom: 32 },
-  emailHighlight: { color: '#FF8C00', fontWeight: '600' },
+  emailHighlight: { color: '#60A5FA', fontWeight: '600' },
   hintText: { fontSize: 14, color: '#444444', lineHeight: 20 },
   form: { gap: 0 },
   spacer: { height: 20 },

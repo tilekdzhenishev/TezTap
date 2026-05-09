@@ -34,8 +34,7 @@ yarn-error.*
 .env
 .env.*
 !.env.example
-environment.env
-environment*.env
+
 
 # local agent / skill state
 .claude/

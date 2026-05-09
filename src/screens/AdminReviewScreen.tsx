@@ -1,22 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  ActivityIndicator,
-  TouchableOpacity,
-} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { View, Text, StyleSheet, SafeAreaView, ActivityIndicator } from 'react-native';
 import { AdminJobCard } from '../components/AdminJobCard';
+import { AdminEmptyState } from '../components/admin/AdminEmptyState';
+import { AdminFeedbackOverlay } from '../components/admin/AdminFeedbackOverlay';
 import { useStore } from '../store/appStore';
-import { RootStackParamList } from '../types/navigation';
 import { theme } from '../utils/theme';
 
 export const AdminReviewScreen: React.FC = () => {
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { pendingJobs, loading, loadPendingJobs, approveJob, rejectJob } = useStore();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [actionFeedback, setActionFeedback] = useState<string | null>(null);
@@ -25,30 +15,31 @@ export const AdminReviewScreen: React.FC = () => {
     loadPendingJobs();
   }, []);
 
+  const advance = () => {
+    setTimeout(() => {
+      setActionFeedback(null);
+      setCurrentIndex((prev) => Math.min(prev, pendingJobs.length - 2));
+    }, 1000);
+  };
+
   const handleApprove = async () => {
-    if (currentIndex < pendingJobs.length) {
-      const jobId = pendingJobs[currentIndex].id;
-      const success = await approveJob(jobId);
-      if (success) {
-        setActionFeedback('Опубликовано');
-        setTimeout(() => {
-          setActionFeedback(null);
-          setCurrentIndex((prev) => Math.min(prev, pendingJobs.length - 2));
-        }, 1000);
-      }
+    const job = pendingJobs[currentIndex];
+    if (!job) return;
+
+    const success = await approveJob(job.id);
+    if (success) {
+      setActionFeedback('Опубликовано');
+      advance();
     }
   };
 
   const handleReject = async () => {
-    if (currentIndex < pendingJobs.length) {
-      const jobId = pendingJobs[currentIndex].id;
-      await rejectJob(jobId);
-      setActionFeedback('Отклонено');
-      setTimeout(() => {
-        setActionFeedback(null);
-        setCurrentIndex((prev) => Math.min(prev, pendingJobs.length - 2));
-      }, 1000);
-    }
+    const job = pendingJobs[currentIndex];
+    if (!job) return;
+
+    await rejectJob(job.id);
+    setActionFeedback('Отклонено');
+    advance();
   };
 
   if (loading) {
@@ -65,50 +56,13 @@ export const AdminReviewScreen: React.FC = () => {
   if (pendingJobs.length === 0 || currentIndex >= pendingJobs.length) {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.headerTitleRow}>
-            <Ionicons
-              name="lock-closed"
-              size={19}
-              color={theme.colors.admin}
-              style={styles.headerIcon}
-            />
-            <Text style={styles.headerTitle}>Вакансии</Text>
-          </View>
-          <Text style={styles.headerCounter}>0 ожидает</Text>
-          <TouchableOpacity
-            style={styles.employersButton}
-            onPress={() => navigation.navigate('AdminEmployerReview')}
-          >
-            <Ionicons
-              name="briefcase"
-              size={15}
-              color={theme.colors.admin}
-              style={styles.buttonIcon}
-            />
-            <Text style={styles.employersButtonText}>Работодатели</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.employersButton}
-            onPress={() => navigation.navigate('AdminWorkerVerification')}
-          >
-            <Ionicons
-              name="construct"
-              size={15}
-              color={theme.colors.admin}
-              style={styles.buttonIcon}
-            />
-            <Text style={styles.employersButtonText}>Работники</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.center}>
-          <Text style={styles.emptyTitle}>Нет подработок для проверки</Text>
-          <Text style={styles.emptyText}>Все подработки обработаны</Text>
-          <TouchableOpacity style={styles.refreshButton} onPress={loadPendingJobs}>
-            <Ionicons name="refresh" size={17} color="#000000" style={styles.buttonIcon} />
-            <Text style={styles.refreshButtonText}>Обновить</Text>
-          </TouchableOpacity>
-        </View>
+        <AdminEmptyState
+          icon="briefcase"
+          title="Нет подработок"
+          description="Все вакансии обработаны"
+          actionLabel="Обновить"
+          onAction={loadPendingJobs}
+        />
       </SafeAreaView>
     );
   }
@@ -117,63 +71,11 @@ export const AdminReviewScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.headerTitleRow}>
-          <Ionicons
-            name="lock-closed"
-            size={19}
-            color={theme.colors.admin}
-            style={styles.headerIcon}
-          />
-          <Text style={styles.headerTitle}>Вакансии</Text>
-        </View>
-        <Text style={styles.headerCounter}>{pendingJobs.length - currentIndex} ожидает</Text>
-        <TouchableOpacity
-          style={styles.employersButton}
-          onPress={() => navigation.navigate('AdminEmployerReview')}
-        >
-          <Ionicons
-            name="briefcase"
-            size={15}
-            color={theme.colors.admin}
-            style={styles.buttonIcon}
-          />
-          <Text style={styles.employersButtonText}>Работодатели</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.employersButton}
-          onPress={() => navigation.navigate('AdminWorkerVerification')}
-        >
-          <Ionicons
-            name="construct"
-            size={15}
-            color={theme.colors.admin}
-            style={styles.buttonIcon}
-          />
-          <Text style={styles.employersButtonText}>Работники</Text>
-        </TouchableOpacity>
-      </View>
-
-      {actionFeedback && (
-        <View style={styles.feedbackOverlay}>
-          {actionFeedback === 'Опубликовано' ? (
-            <Ionicons
-              name="checkmark"
-              size={34}
-              color={theme.colors.success}
-              style={styles.feedbackIcon}
-            />
-          ) : (
-            <Ionicons
-              name="close"
-              size={34}
-              color={theme.colors.danger}
-              style={styles.feedbackIcon}
-            />
-          )}
-          <Text style={styles.feedbackText}>{actionFeedback}</Text>
-        </View>
-      )}
+      <AdminFeedbackOverlay
+        visible={Boolean(actionFeedback)}
+        tone={actionFeedback === 'Опубликовано' ? 'success' : 'danger'}
+        text={actionFeedback ?? ''}
+      />
 
       <View style={styles.cardContainer}>
         <AdminJobCard job={currentJob} onApprove={handleApprove} onReject={handleReject} />
@@ -193,46 +95,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: theme.spacing.xl,
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: theme.spacing.md,
-    paddingVertical: theme.spacing.sm,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: '800',
-    color: theme.colors.admin,
-  },
-  headerTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  headerIcon: {
-    marginRight: theme.spacing.xs,
-  },
-  headerCounter: {
-    fontSize: 14,
-    color: theme.colors.textMuted,
-    fontWeight: '600',
-  },
-  employersButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: theme.colors.admin + '20',
-    paddingHorizontal: theme.spacing.sm,
-    paddingVertical: 6,
-    borderRadius: theme.borderRadius.sm,
-  },
-  buttonIcon: {
-    marginRight: theme.spacing.xs,
-  },
-  employersButtonText: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: theme.colors.admin,
-  },
   cardContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -241,50 +103,5 @@ const styles = StyleSheet.create({
     marginTop: theme.spacing.md,
     fontSize: 16,
     color: theme.colors.textSecondary,
-  },
-  emptyTitle: {
-    fontSize: 24,
-    fontWeight: '800',
-    color: theme.colors.text,
-    marginBottom: theme.spacing.sm,
-  },
-  emptyText: {
-    fontSize: 16,
-    color: theme.colors.textSecondary,
-    textAlign: 'center',
-    marginBottom: theme.spacing.xl,
-  },
-  refreshButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: theme.colors.admin,
-    paddingHorizontal: theme.spacing.xl,
-    paddingVertical: theme.spacing.md,
-    borderRadius: theme.borderRadius.md,
-  },
-  refreshButtonText: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#000000',
-  },
-  feedbackOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: theme.colors.overlay,
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 100,
-  },
-  feedbackText: {
-    fontSize: 32,
-    fontWeight: '800',
-    color: theme.colors.text,
-  },
-  feedbackIcon: {
-    marginBottom: theme.spacing.sm,
   },
 });

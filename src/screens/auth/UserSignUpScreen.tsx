@@ -188,5 +188,5 @@ const styles = StyleSheet.create({
   submitSpacer: { height: 28 },
   footer: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 28 },
   footerText: { fontSize: 15, color: '#555555' },
-  footerLink: { fontSize: 15, color: '#FF8C00', fontWeight: '700' },
+  footerLink: { fontSize: 15, color: '#60A5FA', fontWeight: '700' },
 });

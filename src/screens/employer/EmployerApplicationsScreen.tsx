@@ -308,8 +308,8 @@ const styles = StyleSheet.create({
   acceptBtnText: { fontSize: 14, fontWeight: '700', color: '#fff' },
   rejectBtn: { borderWidth: 1, borderColor: theme.colors.danger },
   rejectBtnText: { fontSize: 14, fontWeight: '700', color: theme.colors.danger },
-  noShowBtn: { borderWidth: 1, borderColor: '#FF8C00' },
-  noShowBtnText: { fontSize: 14, fontWeight: '700', color: '#FF8C00' },
+  noShowBtn: { borderWidth: 1, borderColor: '#60A5FA' },
+  noShowBtnText: { fontSize: 14, fontWeight: '700', color: '#60A5FA' },
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.75)',

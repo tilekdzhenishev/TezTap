@@ -8,6 +8,8 @@ import { EmployerLoginScreen } from '../screens/auth/EmployerLoginScreen';
 import { EmployerSignUpScreen } from '../screens/auth/EmployerSignUpScreen';
 import { ForgotPasswordScreen } from '../screens/auth/ForgotPasswordScreen';
 import { EmailVerificationScreen } from '../screens/auth/EmailVerificationScreen';
+import { AdminAuthScreen } from '../screens/AdminAuthScreen';
+import { AdminTabs } from './AdminTabs';
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
 
@@ -15,7 +17,7 @@ export const AuthNavigator: React.FC = () => (
   <Stack.Navigator
     screenOptions={{
       headerShown: false,
-      contentStyle: { backgroundColor: '#080808' },
+      contentStyle: { backgroundColor: '#080D18' },
       animation: 'slide_from_right',
     }}
   >
@@ -26,5 +28,7 @@ export const AuthNavigator: React.FC = () => (
     <Stack.Screen name="EmployerSignUp" component={EmployerSignUpScreen} />
     <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
     <Stack.Screen name="EmailVerification" component={EmailVerificationScreen} />
+    <Stack.Screen name="AdminAuth" component={AdminAuthScreen} />
+    <Stack.Screen name="AdminTabs" component={AdminTabs} />
   </Stack.Navigator>
 );

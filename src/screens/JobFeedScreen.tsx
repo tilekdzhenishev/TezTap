@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Alert,
   Linking,
+  Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -125,18 +126,8 @@ export const JobFeedScreen: React.FC = () => {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>TezTap</Text>
+          <Image source={require('../../assets/logo.png')} style={styles.headerLogo} />
           <View style={styles.headerRight} />
-          <TouchableOpacity
-            onPress={() =>
-              navigation
-                .getParent<NativeStackNavigationProp<RootStackParamList>>()
-                ?.navigate('AdminAuth')
-            }
-            style={styles.adminButton}
-          >
-            <Ionicons name="lock-closed" size={18} color={theme.colors.textMuted} />
-          </TouchableOpacity>
         </View>
         <View style={styles.center}>
           <Text style={styles.emptyTitle}>Пока всё</Text>
@@ -156,20 +147,10 @@ export const JobFeedScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>TezTap</Text>
+        <Image source={require('../../assets/logo.png')} style={styles.headerLogo} />
         <Text style={styles.headerCounter}>
           {currentJobIndex + 1} / {activeJobs.length}
         </Text>
-        <TouchableOpacity
-          onPress={() =>
-            navigation
-              .getParent<NativeStackNavigationProp<RootStackParamList>>()
-              ?.navigate('AdminAuth')
-          }
-          style={styles.adminButton}
-        >
-          <Ionicons name="lock-closed" size={18} color={theme.colors.textMuted} />
-        </TouchableOpacity>
       </View>
 
       <View style={styles.progressBar}>
@@ -211,10 +192,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.spacing.md,
     paddingVertical: theme.spacing.sm,
   },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: '800',
-    color: theme.colors.text,
+  headerLogo: {
+    width: 38,
+    height: 38,
+    resizeMode: 'contain',
   },
   headerCounter: {
     fontSize: 14,

@@ -207,10 +207,38 @@ create index if not exists idx_job_applications_status on job_applications(statu
 -- RLS for worker_profiles
 alter table worker_profiles enable row level security;
 
-create policy "Workers can manage own profile"
-  on worker_profiles for all
-  using (auth.uid() = user_id)
-  with check (auth.uid() = user_id);
+drop policy if exists "Workers can manage own profile" on worker_profiles;
+drop policy if exists "Workers can read own profile" on worker_profiles;
+drop policy if exists "Workers can create pending profile" on worker_profiles;
+drop policy if exists "Workers can update own pending profile" on worker_profiles;
+drop policy if exists "Admins can manage all worker profiles" on worker_profiles;
+drop policy if exists "Admin console can read worker profiles" on worker_profiles;
+drop policy if exists "Admin console can update worker verification" on worker_profiles;
+
+create policy "Workers can read own profile"
+  on worker_profiles for select
+  using (auth.uid() = user_id);
+
+create policy "Workers can create pending profile"
+  on worker_profiles for insert
+  with check (auth.uid() = user_id and verification_status = 'pending');
+
+create policy "Workers can update own pending profile"
+  on worker_profiles for update
+  using (auth.uid() = user_id and verification_status in ('pending', 'rejected'))
+  with check (auth.uid() = user_id and verification_status = 'pending');
+
+-- The current mobile admin console is unlocked by EXPO_PUBLIC_ADMIN_CODE.
+-- Keep worker verification aligned with jobs/employers until admin actions
+-- are moved to a service-role Edge Function.
+create policy "Admin console can read worker profiles"
+  on worker_profiles for select
+  using (true);
+
+create policy "Admin console can update worker verification"
+  on worker_profiles for update
+  using (true)
+  with check (verification_status in ('pending', 'verified', 'rejected'));
 
 create policy "Admins can manage all worker profiles"
   on worker_profiles for all

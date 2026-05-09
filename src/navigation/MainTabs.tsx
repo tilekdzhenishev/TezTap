@@ -1,14 +1,12 @@
 import React from 'react';
-import { Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/native';
 import { JobFeedScreen } from '../screens/JobFeedScreen';
 import { SavedJobsScreen } from '../screens/SavedJobsScreen';
 import { EmployerPortalScreen } from '../screens/EmployerPortalScreen';
 import { WorkerProfileScreen } from '../screens/worker/WorkerProfileScreen';
-import { MainTabParamList, RootStackParamList } from '../types/navigation';
+import { MainTabParamList } from '../types/navigation';
 import { useAuth } from '../auth/AuthContext';
 import { theme } from '../utils/theme';
 
@@ -21,24 +19,6 @@ const ProfileTab: React.FC = () => {
 };
 
 export const MainTabs: React.FC = () => {
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  let pressCount = 0;
-  let pressTimer: ReturnType<typeof setTimeout> | null = null;
-
-  const handleLogoPress = () => {
-    pressCount++;
-    if (pressCount === 1) {
-      pressTimer = setTimeout(() => {
-        pressCount = 0;
-      }, 1000);
-    }
-    if (pressCount >= 5) {
-      if (pressTimer) clearTimeout(pressTimer);
-      pressCount = 0;
-      navigation.navigate('AdminAuth');
-    }
-  };
-
   return (
     <Tab.Navigator
       screenOptions={{
@@ -50,10 +30,7 @@ export const MainTabs: React.FC = () => {
         tabBarInactiveTintColor: theme.colors.textMuted,
         tabBarLabelStyle: styles.tabBarLabel,
         headerLeft: () => (
-          <TouchableOpacity onPress={handleLogoPress} style={styles.logoButton}>
-            <Text style={styles.logoText}>Tez</Text>
-            <Text style={styles.logoTextAccent}>Tap</Text>
-          </TouchableOpacity>
+          <Image source={require('../../assets/logo.png')} style={styles.logoImage} />
         ),
       }}
     >
@@ -106,18 +83,13 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   logoButton: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingLeft: theme.spacing.md,
   },
-  logoText: {
-    fontSize: 18,
-    fontWeight: '900',
-    color: theme.colors.text,
-  },
-  logoTextAccent: {
-    fontSize: 18,
-    fontWeight: '900',
-    color: theme.colors.primary,
+  logoImage: {
+    width: 34,
+    height: 34,
+    resizeMode: 'contain',
   },
 });

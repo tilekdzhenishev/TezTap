@@ -8,7 +8,6 @@ coverage
 .claude
 .claude-flow
 .swarm
-environment.env
 .env
 .env.*
 package-lock.json

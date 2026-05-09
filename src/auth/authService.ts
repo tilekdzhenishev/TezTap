@@ -106,6 +106,21 @@ export async function authSignUpEmployer(data: SignUpEmployerData) {
   if (error) throw mapAuthError(error);
   if (!authData.user) throw new Error('Registration failed');
 
+  // Always create the employer record immediately using the new user's UUID.
+  // The employers RLS only requires verification_status = 'pending' for INSERT,
+  // so this works even when session is null (email confirmation not yet done).
+  const { error: employerError } = await supabase.from('employers').insert({
+    user_id: authData.user.id,
+    business_name: data.companyName.trim(),
+    business_type: data.industry || 'Другое',
+    contact_phone: data.contactPhone?.trim() || '',
+    description: data.description?.trim() || null,
+    verification_status: 'pending',
+  });
+  if (employerError) throw mapAuthError(employerError);
+
+  // Profile requires auth.uid() = id (RLS), so it can only be created with a live session.
+  // When email confirmation is enabled session is null here; loadProfile handles it on first login.
   if (authData.session) {
     const { error: profileError } = await supabase.from('profiles').upsert({
       id: authData.user.id,
@@ -113,16 +128,6 @@ export async function authSignUpEmployer(data: SignUpEmployerData) {
       role: 'employer',
     });
     if (profileError) throw mapAuthError(profileError);
-
-    const { error: employerError } = await supabase.from('employers').insert({
-      user_id: authData.user.id,
-      business_name: data.companyName.trim(),
-      business_type: data.industry || 'Другое',
-      contact_phone: data.contactPhone?.trim() || '',
-      description: data.description?.trim() || null,
-      verification_status: 'pending',
-    });
-    if (employerError) throw mapAuthError(employerError);
   }
 
   return authData;

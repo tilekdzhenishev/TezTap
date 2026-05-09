@@ -50,18 +50,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
 
       if (!profileError && role === 'employer') {
-        const businessName =
-          typeof metadata.business_name === 'string' ? metadata.business_name : fullName;
-        if (businessName) {
-          await supabase.from('employers').insert({
-            user_id: uid,
-            business_name: businessName,
-            business_type:
-              typeof metadata.business_type === 'string' ? metadata.business_type : 'Другое',
-            contact_phone: typeof metadata.contact_phone === 'string' ? metadata.contact_phone : '',
-            description: typeof metadata.description === 'string' ? metadata.description : null,
-            verification_status: 'pending',
-          });
+        // Guard: only create employer row if one doesn't already exist for this user.
+        // authSignUpEmployer creates it immediately (even without a session),
+        // so on first login there will already be a row — inserting again would duplicate it.
+        const { data: existingEmp } = await supabase
+          .from('employers')
+          .select('id')
+          .eq('user_id', uid)
+          .maybeSingle();
+
+        if (!existingEmp) {
+          const businessName =
+            typeof metadata.business_name === 'string' ? metadata.business_name : fullName;
+          if (businessName) {
+            await supabase.from('employers').insert({
+              user_id: uid,
+              business_name: businessName,
+              business_type:
+                typeof metadata.business_type === 'string' ? metadata.business_type : 'Другое',
+              contact_phone:
+                typeof metadata.contact_phone === 'string' ? metadata.contact_phone : '',
+              description: typeof metadata.description === 'string' ? metadata.description : null,
+              verification_status: 'pending',
+            });
+          }
         }
       }
 
