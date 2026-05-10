@@ -192,6 +192,7 @@ drop policy if exists "Workers can update own pending profile" on worker_profile
 drop policy if exists "Admins can manage all worker profiles" on worker_profiles;
 drop policy if exists "Admin console can read worker profiles" on worker_profiles;
 drop policy if exists "Admin console can update worker verification" on worker_profiles;
+drop policy if exists "Employers can update worker rating" on worker_profiles;
 
 create policy "Workers can read own profile"
   on worker_profiles for select
@@ -226,6 +227,21 @@ create policy "Admins can manage all worker profiles"
       where profiles.id = auth.uid() and profiles.role = 'admin'
     )
   );
+
+-- Employers need to update rating + completed_shifts after rating a worker.
+-- There is no direct FK between job_applications and worker_profiles, so we
+-- can't easily scope this to "only employers who hired this worker" at the DB
+-- level without a view. Scoped to approved employers only.
+create policy "Employers can update worker rating"
+  on worker_profiles for update
+  using (
+    exists (
+      select 1 from employers
+      where employers.user_id = auth.uid()
+        and employers.verification_status = 'approved'
+    )
+  )
+  with check (true);
 
 -- ── job_applications ──────────────────────────────────────────
 create table if not exists job_applications (
@@ -294,3 +310,48 @@ create policy "Admins can manage all applications"
       where profiles.id = auth.uid() and profiles.role = 'admin'
     )
   );
+
+-- ── Auto-close job when a worker is accepted ──────────────────
+-- Runs as security definer so the UPDATE on jobs bypasses RLS
+-- (the trigger owner has full table access).
+create or replace function close_job_on_accept()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if new.status = 'accepted' and (old.status is distinct from 'accepted') then
+    update jobs
+    set is_active = false,
+        closed_at = now()
+    where id = new.job_id;
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists trg_close_job_on_accept on job_applications;
+
+create trigger trg_close_job_on_accept
+  after update of status on job_applications
+  for each row
+  execute function close_job_on_accept();
+
+-- ── Retroactive fix: close jobs that already have an accepted applicant ───────
+update jobs
+set is_active = false,
+    closed_at = coalesce(
+      (select min(responded_at)
+       from job_applications
+       where job_applications.job_id = jobs.id
+         and job_applications.status = 'accepted'),
+      now()
+    )
+where is_active = true
+  and exists (
+    select 1 from job_applications
+    where job_applications.job_id = jobs.id
+      and job_applications.status = 'accepted'
+  );
+

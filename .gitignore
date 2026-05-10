@@ -35,7 +35,6 @@ yarn-error.*
 .env.*
 !.env.example
 
-
 # local agent / skill state
 .claude/
 .claude-flow/

@@ -15,6 +15,7 @@ import { RootStackParamList } from '../../types/navigation';
 import {
   fetchJobApplications,
   updateApplicationStatus,
+  closeJob,
   reportNoShow,
   rateWorker,
 } from '../../supabase/client';
@@ -57,7 +58,10 @@ export const EmployerApplicationsScreen: React.FC = () => {
 
   const handleAccept = async (app: JobApplication) => {
     const ok = await updateApplicationStatus(app.id, 'accepted');
-    if (ok) load();
+    if (ok) {
+      await closeJob(app.job_id);
+      load();
+    }
   };
 
   const handleReject = (app: JobApplication) => {

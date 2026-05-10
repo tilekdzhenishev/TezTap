@@ -200,11 +200,18 @@ export const EmployerPortalScreen: React.FC = () => {
                       {job.title}
                     </Text>
                     <View style={styles.jobStatusRow}>
-                      {job.status === 'approved' ? (
+                      {job.status === 'approved' && job.is_active ? (
                         <Ionicons
                           name="checkmark"
                           size={13}
                           color={theme.colors.success}
+                          style={styles.statusSmallIcon}
+                        />
+                      ) : job.status === 'approved' && !job.is_active ? (
+                        <Ionicons
+                          name="checkmark-done"
+                          size={13}
+                          color={theme.colors.primary}
                           style={styles.statusSmallIcon}
                         />
                       ) : job.status === 'pending' ? (
@@ -223,11 +230,13 @@ export const EmployerPortalScreen: React.FC = () => {
                         />
                       )}
                       <Text style={styles.jobRowStatus}>
-                        {job.status === 'approved'
+                        {job.status === 'approved' && job.is_active
                           ? 'Активна'
-                          : job.status === 'pending'
-                            ? 'На проверке'
-                            : 'Отклонена'}
+                          : job.status === 'approved' && !job.is_active
+                            ? 'Закрыта'
+                            : job.status === 'pending'
+                              ? 'На проверке'
+                              : 'Отклонена'}
                       </Text>
                     </View>
                   </View>

@@ -116,6 +116,19 @@ export async function approveJob(jobId: string): Promise<boolean> {
   return true;
 }
 
+export async function closeJob(jobId: string): Promise<boolean> {
+  const { error } = await supabase
+    .from('jobs')
+    .update({ is_active: false, closed_at: new Date().toISOString() })
+    .eq('id', jobId);
+
+  if (error) {
+    console.error('Error closing job:', error);
+    return false;
+  }
+  return true;
+}
+
 export async function rejectJob(jobId: string): Promise<boolean> {
   const { error } = await supabase
     .from('jobs')
@@ -493,25 +506,53 @@ export async function fetchMyApplications(workerId: string): Promise<JobApplicat
 }
 
 export async function fetchJobApplications(jobId: string): Promise<JobApplication[]> {
+  // job_applications.worker_id → auth.users(id), not worker_profiles — no direct FK exists,
+  // so PostgREST cannot derive the join automatically. Fetch worker profiles separately.
   const { data, error } = await supabase
     .from('job_applications')
-    .select('*, worker_profile:worker_profiles!worker_id(*)')
+    .select('*')
     .eq('job_id', jobId)
     .order('applied_at', { ascending: true });
 
   if (error) return [];
-  return data as JobApplication[];
+  if (!data || data.length === 0) return data as JobApplication[];
+
+  const workerIds = data.map((a) => a.worker_id);
+  const { data: profiles } = await supabase
+    .from('worker_profiles')
+    .select('*')
+    .in('user_id', workerIds);
+
+  const profileMap = Object.fromEntries((profiles ?? []).map((p) => [p.user_id, p]));
+
+  return data.map((app) => ({
+    ...app,
+    worker_profile: profileMap[app.worker_id] ?? null,
+  })) as JobApplication[];
 }
 
 export async function fetchApplicationsForEmployer(employerId: string): Promise<JobApplication[]> {
   const { data, error } = await supabase
     .from('job_applications')
-    .select('*, job:jobs!inner(*), worker_profile:worker_profiles!worker_id(*)')
+    .select('*, job:jobs!inner(*)')
     .eq('jobs.employer_id', employerId)
     .order('applied_at', { ascending: false });
 
   if (error) return [];
-  return data as JobApplication[];
+  if (!data || data.length === 0) return data as JobApplication[];
+
+  const workerIds = data.map((a) => a.worker_id);
+  const { data: profiles } = await supabase
+    .from('worker_profiles')
+    .select('*')
+    .in('user_id', workerIds);
+
+  const profileMap = Object.fromEntries((profiles ?? []).map((p) => [p.user_id, p]));
+
+  return data.map((app) => ({
+    ...app,
+    worker_profile: profileMap[app.worker_id] ?? null,
+  })) as JobApplication[];
 }
 
 export async function updateApplicationStatus(
@@ -576,13 +617,17 @@ export async function rateWorker(
 
   if (data && data.length > 0) {
     const avg = data.reduce((sum, r) => sum + (r.rating ?? 0), 0) / data.length;
-    await supabase
+    const { error: wpError } = await supabase
       .from('worker_profiles')
       .update({
         rating: Math.round(avg * 100) / 100,
         completed_shifts: data.length,
       })
       .eq('user_id', workerId);
+
+    if (wpError) {
+      console.error('Error updating worker rating stats:', wpError);
+    }
   }
 
   return true;
